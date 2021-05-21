@@ -16,6 +16,7 @@ defmodule MateWeb.Router do
 
   scope "/", MateWeb do
     pipe_through :browser
+    resources "/accounts", AccountController
 
     live "/", PageLive, :index
   end

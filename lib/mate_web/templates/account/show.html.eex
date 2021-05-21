@@ -1,0 +1,18 @@
+<h1>Show Account</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @account.name %>
+  </li>
+
+  <li>
+    <strong>Code:</strong>
+    <%= @account.code %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.account_path(@conn, :edit, @account) %></span>
+<span><%= link "Back", to: Routes.account_path(@conn, :index) %></span>
