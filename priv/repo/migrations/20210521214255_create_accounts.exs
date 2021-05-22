@@ -4,7 +4,7 @@ defmodule Mate.Repo.Migrations.CreateAccounts do
   def change do
     create table(:accounts) do
       add :name, :string
-      add :code, :string
+      add :type, :string
 
       timestamps()
     end

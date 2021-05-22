@@ -1,10 +1,11 @@
 defmodule Mate.Conty.Account do
+  @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "accounts" do
-    field :code, :string
     field :name, :string
+    field :type, Ecto.Enum, values: ~w(assets liabilities equity income outcome)a
 
     timestamps()
   end
@@ -12,7 +13,7 @@ defmodule Mate.Conty.Account do
   @doc false
   def changeset(account, attrs) do
     account
-    |> cast(attrs, [:name, :code])
-    |> validate_required([:name, :code])
+    |> cast(attrs, [:name, :type])
+    |> validate_required([:name, :type])
   end
 end

@@ -1,19 +1,36 @@
-<%= form_for @changeset, @action, fn f -> %>
-  <%= if @changeset.action do %>
-    <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <div class="card card-primary">
+      <div class="card-header">
+        <h5 class="mb-0">Cuentas</h5>
+      </div>
+      <div class="card-body">
+        <%= form_for @changeset, @action, fn f -> %>
+          <%= if @changeset.action do %>
+            <div class="alert alert-danger">
+              <p>Oops, something went wrong! Please check the errors below.</p>
+            </div>
+          <% end %>
+
+          <div class="mb-3">
+            <%= label f, "Nombre", class: "form-label" %>
+            <%= text_input f, :name, class: "form-control"%>
+            <%= error_tag f, :name %>
+          </div>
+
+          <div class="mb-3">
+            <%= label f, "Categoría", class: "form-label"%>
+            <%= select f, :type, Ecto.Enum.values(Account, :type), class: "form-control" %>
+            <%= error_tag f, :type %>
+          </div>
+
+          <div>
+            <%= submit "Guardar", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
     </div>
-  <% end %>
-
-  <%= label f, :name %>
-  <%= text_input f, :name %>
-  <%= error_tag f, :name %>
-
-  <%= label f, :code %>
-  <%= select f, :code, ~w(assets liabilities equity result) %>
-  <%= error_tag f, :code %>
-
-  <div>
-    <%= submit "Save" %>
   </div>
-<% end %>
+</div>
+
+
