@@ -1,0 +1,57 @@
+<h1>Show Entry group</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, MateWeb.EntryGroupLive.FormComponent,
+    id: @entry_group.id,
+    title: @page_title,
+    action: @live_action,
+    entry_group: @entry_group,
+    return_to: Routes.entry_group_show_path(@socket, :show, @entry_group) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Status:</strong>
+    <%= @entry_group.status %>
+  </li>
+
+  <li>
+    <strong>Amount:</strong>
+    <%= @entry_group.amount %>
+  </li>
+
+  <li>
+    <strong>Start date:</strong>
+    <%= @entry_group.start_date %>
+  </li>
+
+  <li>
+    <strong>End date:</strong>
+    <%= @entry_group.end_date %>
+  </li>
+
+  <li>
+    <strong>Recurrent:</strong>
+    <%= @entry_group.recurrent %>
+  </li>
+
+  <li>
+    <strong>Periodicity type:</strong>
+    <%= @entry_group.periodicity_type %>
+  </li>
+
+  <li>
+    <strong>Periodicity:</strong>
+    <%= @entry_group.periodicity %>
+  </li>
+
+  <li>
+    <strong>Periodicity buffer:</strong>
+    <%= @entry_group.periodicity_buffer %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.entry_group_show_path(@socket, :edit, @entry_group), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.entry_group_index_path(@socket, :index) %></span>

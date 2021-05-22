@@ -1,0 +1,46 @@
+<h2><%= @title %></h2>
+
+<%= f = form_for @changeset, "#",
+  id: "entry_group-form",
+  phx_target: @myself,
+  phx_change: "validate",
+  phx_submit: "save" %>
+
+  <%= label f, :amount %>
+  <%= number_input f, :amount, step: "any" %>
+  <%= error_tag f, :amount %>
+
+  <%= label f, :start_date %>
+  <%= text_input f, :start_date, type: "date" %>
+  <%= error_tag f, :start_date %>
+
+  <%= label f, :end_date %>
+  <%= text_input f, :end_date, type: "date" %>
+  <%= error_tag f, :end_date %>
+
+  <%= label f, :recurrent %>
+  <%= checkbox f, :recurrent %>
+  <%= error_tag f, :recurrent %>
+
+  <%= label f, :periodicity_type %>
+  <%= text_input f, :periodicity_type %>
+  <%= error_tag f, :periodicity_type %>
+
+  <%= label f, :periodicity %>
+  <%= number_input f, :periodicity %>
+  <%= error_tag f, :periodicity %>
+
+  <%= label f, :periodicity_buffer %>
+  <%= number_input f, :periodicity_buffer %>
+  <%= error_tag f, :periodicity_buffer %>
+
+  <%= label f, :account_debit %>
+  <%= select f, :account_debit_id, [1,2,3] %>
+  <%= error_tag f, :account_debit_id %>
+
+  <%= label f, :account_credit %>
+  <%= select f, :account_credit_id, [1,2,3] %>
+  <%= error_tag f, :account_credit_id %>
+  <br>
+  <%= submit "Save", phx_disable_with: "Saving..." %>
+</form>

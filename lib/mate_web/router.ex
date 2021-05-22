@@ -19,7 +19,13 @@ defmodule MateWeb.Router do
     resources "/accounts", AccountController
 
     live "/", PageLive, :index
-  end
+    live "/entry_groups", EntryGroupLive.Index, :index
+    live "/entry_groups/new", EntryGroupLive.Index, :new
+    live "/entry_groups/:id/edit", EntryGroupLive.Index, :edit
+
+    live "/entry_groups/:id", EntryGroupLive.Show, :show
+    live "/entry_groups/:id/show/edit", EntryGroupLive.Show, :edit
+ end
 
   # Other scopes may use custom stacks.
   # scope "/api", MateWeb do
