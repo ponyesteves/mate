@@ -8,15 +8,6 @@ defmodule Mate.Conty do
 
   alias Mate.Conty.{Account, EntryItem}
 
-  @doc """
-  Returns the list of accounts.
-
-  ## Examples
-
-      iex> list_accounts()
-      [%Account{}, ...]
-
-  """
   def list_accounts do
     Repo.all(Account)
   end

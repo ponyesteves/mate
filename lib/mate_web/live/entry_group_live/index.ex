@@ -1,4 +1,5 @@
 defmodule MateWeb.EntryGroupLive.Index do
+  @moduledoc false
   use MateWeb, :live_view
 
   alias Mate.Transactions

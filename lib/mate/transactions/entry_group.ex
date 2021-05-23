@@ -1,4 +1,5 @@
 defmodule Mate.Transactions.EntryGroup do
+  @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
 

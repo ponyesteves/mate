@@ -1,4 +1,5 @@
 defmodule Mate.Conty.Entry do
+  @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -1,4 +1,5 @@
 defmodule MateWeb.ModalComponent do
+  @moduledoc false
   use MateWeb, :live_component
 
   @impl true

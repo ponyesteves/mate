@@ -1,4 +1,5 @@
 defmodule MateWeb.PageLive do
+  @moduledoc false
   use MateWeb, :live_view
 
   @impl true

@@ -1,4 +1,5 @@
 defmodule MateWeb.EntryGroupLive.FormComponent do
+  @moduledoc false
   use MateWeb, :live_component
 
   alias Mate.Transactions
