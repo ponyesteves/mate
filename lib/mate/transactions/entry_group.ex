@@ -1,5 +1,8 @@
 defmodule Mate.Transactions.EntryGroup do
-  @moduledoc false
+  @moduledoc """
+    EntryGroup contains all the info for creating entries.
+    We don't create entries directly, we always use this wrapper
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

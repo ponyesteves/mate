@@ -6,7 +6,7 @@ defmodule Mate.Conty do
   import Ecto.Query, warn: false
   alias Mate.Repo
 
-  alias Mate.Conty.{Account, EntryItem}
+  alias Mate.Conty.{Account, Entry, EntryItem}
 
   def list_accounts do
     Repo.all(Account)
@@ -42,4 +42,10 @@ defmodule Mate.Conty do
   def balance(entry_items, balance \\ 0)
   def balance([%{amount: amount} | rest], acc), do: balance(rest, acc + amount)
   def balance([], balance), do: balance
+
+
+  def change_entry(%Entry{} = entry, attrs \\ %{}) do
+    entry
+    |> Entry.changeset(attrs)
+  end
 end

@@ -22,6 +22,7 @@ defmodule Mate.Conty.Entry do
   def changeset(entry, attrs) do
     entry
     |> cast(attrs, [:date, :type, :account_credit_id, :account_debit_id])
+    |> cast_assoc(:entry_items)
     |> validate_required([:date, :type, :account_credit_id, :account_debit_id])
   end
 end

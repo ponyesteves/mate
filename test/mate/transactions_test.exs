@@ -3,6 +3,10 @@ defmodule Mate.TransactionsTest do
 
   alias Mate.Transactions
 
+  setup do
+    Mate.Conty.create_account(%{name: "test", type: "assets"})
+  end
+
   describe "entry_groups" do
     alias Mate.Transactions.EntryGroup
 
@@ -11,7 +15,7 @@ defmodule Mate.TransactionsTest do
     @invalid_attrs %{amount: nil, end_date: nil, periodicity: nil, periodicity_buffer: nil, periodicity_type: nil, recurrent: nil, start_date: nil, status: nil}
 
     def entry_group_fixture(attrs \\ %{}) do
-      {:ok, entry_group} =
+      {:ok, entry_group, entry} =
         attrs
         |> Enum.into(@valid_attrs)
         |> Transactions.create_entry_group()
