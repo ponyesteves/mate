@@ -19,13 +19,16 @@ defmodule Mate.Transactions do
   def create_entry_group(attrs \\ %{}) do
     entry_group_changeset = EntryGroup.changeset(%EntryGroup{}, attrs)
 
-    Multi.new()
-    |> Multi.insert(:entry_group, entry_group_changeset)
-    |> Multi.run(:entry, &create_entry/2)
-    |> Repo.transaction()
+    {:ok, %{entry_group: entry_group}} =
+      Multi.new()
+      |> Multi.insert(:entry_group, entry_group_changeset)
+      |> Multi.run(:entry, &create_entry/2)
+      |> Repo.transaction()
+
+    {:ok, entry_group}
   end
 
-  defp create_entry(repo, %EntryGroup{} = entry_group) do
+  defp create_entry(repo, %{entry_group: %EntryGroup{} = entry_group}) do
     entry_attrs = %{
       date: entry_group.start_date,
       type: "Income",
