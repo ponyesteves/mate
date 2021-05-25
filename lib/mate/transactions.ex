@@ -22,13 +22,19 @@ defmodule Mate.Transactions do
     {:ok, %{entry_group: entry_group}} =
       Multi.new()
       |> Multi.insert(:entry_group, entry_group_changeset)
-      |> Multi.run(:entry, &create_entry/2)
+      |> Multi.run(:entry, &create_entries/2)
       |> Repo.transaction()
 
     {:ok, entry_group}
   end
 
-  defp create_entry(repo, %{entry_group: %EntryGroup{} = entry_group}) do
+  defp create_entries(repo, multi_struct, periodicity_buffer_count \\ 0)
+  defp create_entries(
+         repo,
+         %{entry_group: %EntryGroup{} = entry_group} = multi_struct,
+         periodicity_buffer_count
+       )
+       when periodicity_buffer_count < entry_group.periodicity_buffer do
     entry_attrs = %{
       date: entry_group.start_date,
       type: "Income",
@@ -42,7 +48,11 @@ defmodule Mate.Transactions do
 
     Conty.change_entry(%Conty.Entry{}, entry_attrs)
     |> repo.insert()
+
+    create_entries(repo, multi_struct, periodicity_buffer_count + 1)
   end
+
+  defp create_entries(_repo, _multi_struct, _periodicity_buffer_count), do: {:ok, nil}
 
   def update_entry_group(%EntryGroup{} = entry_group, attrs) do
     entry_group

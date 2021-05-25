@@ -34,9 +34,9 @@ defmodule Mate.Conty do
     Account.changeset(account, attrs)
   end
 
-  def entry_items_by_account_and_date(account_id, date) do
+  def entry_items_by_account(account_id, %{end_date: end_date}) do
     Repo.all(from e in EntryItem,
-      where: e.account_id == ^account_id and e.date <= ^date)
+      where: e.account_id == ^account_id and e.date <= ^end_date)
   end
 
   def balance(entry_items, balance \\ 0)

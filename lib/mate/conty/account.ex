@@ -15,5 +15,6 @@ defmodule Mate.Conty.Account do
     account
     |> cast(attrs, [:name, :type])
     |> validate_required([:name, :type])
+    |> validate_inclusion(:type, Ecto.Enum.values(__MODULE__, :type))
   end
 end
