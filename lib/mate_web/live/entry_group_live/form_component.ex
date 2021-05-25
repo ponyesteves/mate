@@ -2,16 +2,18 @@ defmodule MateWeb.EntryGroupLive.FormComponent do
   @moduledoc false
   use MateWeb, :live_component
 
-  alias Mate.Transactions
+  alias Mate.{Conty, Transactions}
 
   @impl true
   def update(%{entry_group: entry_group} = assigns, socket) do
     changeset = Transactions.change_entry_group(entry_group)
+    accounts = Conty.list_accounts |> Enum.map & {&1.name, &1.id}
 
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:changeset, changeset)}
+     |> assign(:changeset, changeset)
+     |> assign(:accounts, accounts)}
   end
 
   @impl true

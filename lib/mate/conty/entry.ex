@@ -11,7 +11,7 @@ defmodule Mate.Conty.Entry do
 
     belongs_to(:account_credit, Account)
     belongs_to(:account_debit, Account)
-    belongs_to(:pay_account, Account)
+    belongs_to(:account_pay, Account)
 
     has_many(:entry_items, EntryItem)
 

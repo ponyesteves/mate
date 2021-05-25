@@ -50,13 +50,13 @@
 
       <div class="mb-3">
         <%= label f, :account_debit, class: "form-label" %>
-        <%= select f, :account_debit_id, [1,2,3], class: "form-select" %>
+        <%= select f, :account_debit_id, @accounts, class: "form-select" %>
         <%= error_tag f, :account_debit_id %>
       </div>
 
       <div class="mb-3">
         <%= label f, :account_credit, class: "form-label" %>
-        <%= select f, :account_credit_id, [1,2,3], class: "form-select"%>
+        <%= select f, :account_credit_id, @accounts, class: "form-select"%>
         <%= error_tag f, :account_credit_id %>
       </div>
       <br>

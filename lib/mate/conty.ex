@@ -34,15 +34,34 @@ defmodule Mate.Conty do
     Account.changeset(account, attrs)
   end
 
+  @spec entry_items_by_account(String.t(), %{end_date: Date.t()}) ::
+          {:ok, [Entry]} | {:error, String.t()}
+  def entry_items_by_account_type(account_type, %{end_date: end_date}) do
+    if account_type in Ecto.Enum.values(Account, :type) do
+      {:ok,
+       Repo.all(
+         from ei in EntryItem,
+           join: a in Account,
+           on: ei.account_id == a.id,
+           join: e in Entry,
+           on: ei.entry_id == e.id,
+           where: a.type == ^account_type and e.date <= ^end_date
+       )}
+    else
+      {:error, "Invalid account type"}
+    end
+  end
+
   def entry_items_by_account(account_id, %{end_date: end_date}) do
-    Repo.all(from e in EntryItem,
-      where: e.account_id == ^account_id and e.date <= ^end_date)
+    Repo.all(
+      from e in EntryItem,
+        where: e.account_id == ^account_id and e.date <= ^end_date
+    )
   end
 
   def balance(entry_items, balance \\ 0)
   def balance([%{amount: amount} | rest], acc), do: balance(rest, acc + amount)
   def balance([], balance), do: balance
-
 
   def change_entry(%Entry{} = entry, attrs \\ %{}) do
     entry

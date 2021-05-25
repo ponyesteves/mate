@@ -14,8 +14,8 @@ defmodule Mate.Transactions.EntryGroup do
     field :end_date, :date
     field :amount, :decimal
     field :recurrent, :boolean, default: false
-    field :periodicity, :integer
-    field :periodicity_buffer, :integer
+    field :periodicity, :integer, default: 1
+    field :periodicity_buffer, :integer, default: 1
     field :periodicity_type, :string
 
     belongs_to :account_debit, Account

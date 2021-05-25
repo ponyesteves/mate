@@ -24,7 +24,7 @@ defmodule MateWeb.EntryGroupLive.Index do
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Entry group")
-    |> assign(:entry_group, %EntryGroup{})
+    |> assign(:entry_group, %EntryGroup{start_date: Date.utc_today()})
   end
 
   defp apply_action(socket, :index, _params) do
