@@ -35,17 +35,21 @@
 
 .phx-modal-content {
   background-color: #fefefe;
-  margin: 15% auto;
+  margin: 1rem auto;
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
 }
 
 .phx-modal-close {
-  color: #aaa;
-  float: right;
+  position: relative;
+  color: #fff;
   font-size: 28px;
   font-weight: bold;
+  float: right;
+  margin-left: -25px;
+  width: 25px;
+  z-index: 99999;
 }
 
 .phx-modal-close:hover,

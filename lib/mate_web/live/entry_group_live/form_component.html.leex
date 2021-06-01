@@ -1,4 +1,7 @@
-<div class="card card-primary">
+<div class="card card-primary" x-data="{showEndDate: false, isRecurrent: false}">
+  <div class="card-header bg-primary text-white">
+    <h3>Entrada</h3>
+  </div>
   <div class="card-body">
     <%= f = form_for @changeset, "#",
       id: "entry_group-form",
@@ -6,59 +9,72 @@
       phx_change: "validate",
       phx_submit: "save" %>
 
-      <div class="mb-3">
+      <div class="mb-3 col-md-4">
         <%= label f, :amount, class: "form-label" %>
         <%= number_input f, :amount, step: "any", class: "form-control" %>
         <%= error_tag f, :amount %>
       </div>
 
-      <div class="mb-3">
-        <%= label f, :start_date, class: "form-label" %>
-        <%= text_input f, :start_date, type: "date", class: "form-control" %>
-        <%= error_tag f, :start_date %>
+      <div class="row">
+        <div class="mb-3 col-md-4">
+          <%= label f, :account_debit, class: "form-label" %>
+          <%= select f, :account_debit_id, @accounts, class: "form-select" %>
+          <%= error_tag f, :account_debit_id %>
+        </div>
+
+        <div class="mb-3 col-md-4">
+          <%= label f, :account_credit, class: "form-label" %>
+          <%= select f, :account_credit_id, @accounts, class: "form-select"%>
+          <%= error_tag f, :account_credit_id %>
+        </div>
       </div>
 
-      <div class="mb-3">
-        <%= label f, :end_date, class: "form-label" %>
-        <%= text_input f, :end_date, type: "date", class: "form-control" %>
-        <%= error_tag f, :end_date %>
+      <div class="row">
+        <div class="mb-3 col-md-2">
+          <%= label f, :start_date, class: "form-label" %>
+          <%= text_input f, :start_date, type: "date", class: "form-control" %>
+          <%= error_tag f, :start_date %>
+        </div>
+
+        <div class="mb-3 col-md-2" x-show="showEndDate">
+          <%= label f, :end_date, class: "form-label" %>
+          <%= text_input f, :end_date, type: "date", class: "form-control dn" %>
+          <%= error_tag f, :end_date %>
+        </div>
       </div>
 
       <div class="mb-3 form-check">
+        <%= label :toggle, "Agregar fecha de fin", class: "form-check-label", for: "toggle_end_date" %>
+        <%= checkbox :toggle, :end_date, class: "form-check-input", "@click": "showEndDate = !showEndDate" %>
+      </div>
+
+
+      <div class="mb-3 form-check">
         <%= label f, :recurrent, class: "form-check-label" %>
-        <%= checkbox f, :recurrent, class: "form-check-input" %>
+        <%= checkbox f, :recurrent, class: "form-check-input", "@click": "isRecurrent = !isRecurrent" %>
         <%= error_tag f, :recurrent %>
       </div>
 
-      <div class="mb-3">
-        <%= label f, :periodicity_type, class: "form-label"  %>
-        <%= text_input f, :periodicity_type, class: "form-control" %>
-        <%= error_tag f, :periodicity_type %>
+      <div class="row">
+        <div class="mb-3 col-md-2" x-show="isRecurrent">
+          <%= label f, :periodicity_type, class: "form-label"  %>
+          <%= text_input f, :periodicity_type, class: "form-control" %>
+          <%= error_tag f, :periodicity_type %>
+        </div>
+
+        <div class="mb-3 col-md-2" x-show="isRecurrent">
+          <%= label f, :periodicity, class: "form-label"  %>
+          <%= number_input f, :periodicity, class: "form-control" %>
+          <%= error_tag f, :periodicity %>
+        </div>
+
+        <div class="mb-3 col-md-2" x-show="isRecurrent">
+          <%= label f, :periodicity_buffer, class: "form-label"  %>
+          <%= number_input f, :periodicity_buffer, class: "form-control" %>
+          <%= error_tag f, :periodicity_buffer %>
+        </div>
       </div>
 
-      <div class="mb-3">
-        <%= label f, :periodicity, class: "form-label"  %>
-        <%= number_input f, :periodicity, class: "form-control" %>
-        <%= error_tag f, :periodicity %>
-      </div>
-
-      <div class="mb-3">
-        <%= label f, :periodicity_buffer, class: "form-label"  %>
-        <%= number_input f, :periodicity_buffer, class: "form-control" %>
-        <%= error_tag f, :periodicity_buffer %>
-      </div>
-
-      <div class="mb-3">
-        <%= label f, :account_debit, class: "form-label" %>
-        <%= select f, :account_debit_id, @accounts, class: "form-select" %>
-        <%= error_tag f, :account_debit_id %>
-      </div>
-
-      <div class="mb-3">
-        <%= label f, :account_credit, class: "form-label" %>
-        <%= select f, :account_credit_id, @accounts, class: "form-select"%>
-        <%= error_tag f, :account_credit_id %>
-      </div>
       <br>
       <%= submit "Guardar", phx_disable_with: "Saving...", class: "btn btn-primary" %>
     </form>
