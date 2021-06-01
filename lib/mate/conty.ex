@@ -45,7 +45,8 @@ defmodule Mate.Conty do
            on: ei.account_id == a.id,
            join: e in Entry,
            on: ei.entry_id == e.id,
-           where: a.type == ^account_type and e.date <= ^end_date
+           where: a.type == ^account_type and e.date <= ^end_date,
+           preload: [:account]
        )}
     else
       {:error, "Invalid account type"}

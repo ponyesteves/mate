@@ -6,7 +6,7 @@ defmodule Mate.Transactions.EntryGroup do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Mate.Conty.Account
+  alias Mate.Conty.{Account, Entry}
 
   schema "entry_groups" do
     field :status, :string, default: "active"
@@ -16,7 +16,9 @@ defmodule Mate.Transactions.EntryGroup do
     field :recurrent, :boolean, default: false
     field :periodicity, :integer, default: 1
     field :periodicity_buffer, :integer, default: 1
-    field :periodicity_type, :string
+    field :periodicity_type, Ecto.Enum, values: ~w(day month year)a, default: :day
+
+    has_many :entries, Entry
 
     belongs_to :account_debit, Account
     belongs_to :account_credit, Account
@@ -29,6 +31,6 @@ defmodule Mate.Transactions.EntryGroup do
   def changeset(entry_group, attrs) do
     entry_group
     |> cast(attrs, [:start_date, :end_date, :amount, :recurrent, :periodicity_type, :periodicity, :periodicity_buffer, :account_debit_id, :account_credit_id])
-    |> validate_required([:status, :amount, :start_date, :end_date, :recurrent, :periodicity_type, :periodicity, :periodicity_buffer, :account_debit_id, :account_credit_id])
+    |> validate_required([:status, :amount, :start_date, :recurrent, :periodicity_type, :periodicity, :periodicity_buffer, :account_debit_id, :account_credit_id])
   end
 end

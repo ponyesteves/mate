@@ -38,6 +38,7 @@ defmodule Mate.Transactions do
     entry_attrs = %{
       date: entry_group.start_date,
       type: "Income",
+      entry_group_id: entry_group.id,
       account_credit_id: entry_group.account_credit_id,
       account_debit_id: entry_group.account_debit_id,
       entry_items: [

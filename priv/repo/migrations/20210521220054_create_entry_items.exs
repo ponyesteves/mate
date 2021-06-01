@@ -4,7 +4,7 @@ defmodule Mate.Repo.Migrations.CreateEntryItems do
   def change do
     create table(:entry_items) do
       add :amount, :decimal
-      add :entry_id, references(:entries, on_delete: :nothing)
+      add :entry_id, references(:entries, on_delete: :delete_all)
       add :account_id, references(:accounts, on_delete: :nothing)
 
       timestamps()

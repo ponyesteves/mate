@@ -8,7 +8,7 @@ defmodule Mate.Repo.Migrations.CreateEntries do
 
       add :account_credit_id, references(:accounts, on_delete: :nothing)
       add :account_debit_id, references(:accounts, on_delete: :nothing)
-      add :account_pay_id, references(:accounts, on_delete: :nothing)
+      add :entry_group_id, references(:entry_groups, on_delete: :delete_all)
 
       timestamps()
     end

@@ -3,10 +3,12 @@ defmodule Mate.Conty.EntryItem do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Mate.Conty.{Account, Entry}
   schema "entry_items" do
     field :amount, :decimal
-    field :entry_id, :id
-    field :account_id, :id
+
+    belongs_to :entry, Entry
+    belongs_to :account, Account
 
     timestamps()
   end
@@ -14,7 +16,7 @@ defmodule Mate.Conty.EntryItem do
   @doc false
   def changeset(entry_item, attrs) do
     entry_item
-    |> cast(attrs, [:amount])
-    |> validate_required([:amount])
+    |> cast(attrs, [:amount, :account_id])
+    |> validate_required([:amount, :account_id])
   end
 end

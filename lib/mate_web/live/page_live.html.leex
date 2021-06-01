@@ -8,6 +8,7 @@
       <div class="card-body">
         <ul class="list-group">
           <%= for entry_item <- @entry_items do %>
+            <li><%= entry_item.account.name %></li>
             <li><%= entry_item.amount %></li>
           <% end %>
         </ul>
