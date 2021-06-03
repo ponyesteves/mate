@@ -90,6 +90,8 @@ defmodule MateWeb do
 
       import MateWeb.ErrorHelpers
       import MateWeb.Gettext
+      import MateWeb.ViewHelpers
+
       alias MateWeb.Router.Helpers, as: Routes
     end
   end

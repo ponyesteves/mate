@@ -7,7 +7,7 @@ defmodule MateWeb.EntryGroupLive.FormComponent do
   @impl true
   def update(%{entry_group: entry_group} = assigns, socket) do
     changeset = Transactions.change_entry_group(entry_group)
-    accounts = Conty.list_accounts |> Enum.map & {&1.name, &1.id}
+    accounts = Conty.list_accounts |> Enum.map(& {&1.name, &1.id})
 
     {:ok,
      socket

@@ -1,0 +1,43 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: es\n"
+"Plural-Forms: nplurals=2\n"
+
+msgid "amount"
+msgstr "Importe"
+
+msgid "account_debit"
+msgstr "Cuenta Debito"
+
+msgid "account_credit"
+msgstr "Cuenta Crédito"
+
+msgid "start_date"
+msgstr "Fecha Inicio"
+
+msgid "end_date"
+msgstr "Fecha Fin"
+
+msgid "toggle_end_date"
+msgstr "Mostrar fecha fin"
+
+msgid "recurrent"
+msgstr "Repite"
+
+msgid "periodicity"
+msgstr "repetir"
+
+#, fuzzy
+msgid "periodicity_type"
+msgstr "Cada"
+
+msgid "periodicity_buffer"
+msgstr "Mantener adelante"
