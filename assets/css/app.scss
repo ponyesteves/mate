@@ -1,6 +1,26 @@
 /* This file is for your main application css. */
 // @import './phoenix.css';
-@import '../node_modules/bootstrap/dist/css/bootstrap.css';
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+
+.card--primary {
+  @extend .card;
+  @extend .border-primary;
+}
+
+.card__header--primary {
+  @extend .card-header;
+  @extend .bg-primary;
+  @extend .text-white;
+  @extend .d-flex;
+  @extend .justify-content-between;
+  @extend .align-items-center;
+}
+
+.list-group__item {
+  @extend .list-group-item;
+  @extend .mb-1;
+  @extend .shadow-lg;
+}
 
 /* LiveView specific classes for your customizations */
 .phx-no-feedback.invalid-feedback,

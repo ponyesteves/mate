@@ -9,20 +9,21 @@
 <div class="row pt-4">
   <div class="col-md-6">
     <!-- Candidate for component -->
-    <div class="card border-primary">
-      <div class="card-header bg-primary text-white">
-        <h5 class="d-flex justify-content-end align-items-center">
-          <span class="w-75">¿Cuanto tengo?</span>
-          <%= live_patch to: Routes.page_path(@socket, :new), class: "btn btn-primary border-white" do %>
-            <i class="fa fa-plus"></i>
-        <% end %>
+    <div class="card--primary">
+      <div class="card__header--primary">
+        <h5 class="w-100 text-center mb-0">
+          ¿Cuanto tengo?
         </h5>
+        <%= live_patch to: Routes.page_path(@socket, :new), class: "btn btn-primary border-white" do %>
+          <i class="fa fa-plus"></i>
+        <% end %>
       </div>
       <div class="card-body">
         <ul class="list-group">
           <%= for entry_item <- @entry_items do %>
-            <li><%= entry_item.account.name %></li>
-            <li><%= entry_item.amount %></li>
+            <li class="list-group__item">
+              <%= entry_item.account.name %>
+            </li>
           <% end %>
         </ul>
       </div>
