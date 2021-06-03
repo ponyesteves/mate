@@ -1,9 +1,22 @@
+<%= if @live_action in [:new] do %>
+  <%= live_modal @socket, MateWeb.EntryGroupLive.FormComponent,
+    id: @entry_group.id || :new,
+    title: @page_title,
+    action: @live_action,
+    entry_group: @entry_group,
+    return_to: Routes.page_path(@socket, :index) %>
+<% end %>
 <div class="row pt-4">
   <div class="col-md-6">
     <!-- Candidate for component -->
-    <div class="card card-primary">
-      <div class="card-header">
-        <h5 class="my-1 text-center">¿Cuanto tengo?</h5>
+    <div class="card border-primary">
+      <div class="card-header bg-primary text-white">
+        <h5 class="d-flex justify-content-end align-items-center">
+          <span class="w-75">¿Cuanto tengo?</span>
+          <%= live_patch to: Routes.page_path(@socket, :new), class: "btn btn-primary border-white" do %>
+            <i class="fa fa-plus"></i>
+        <% end %>
+        </h5>
       </div>
       <div class="card-body">
         <ul class="list-group">

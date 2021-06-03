@@ -19,13 +19,16 @@ defmodule Mate.Transactions do
   def create_entry_group(attrs \\ %{}) do
     entry_group_changeset = EntryGroup.changeset(%EntryGroup{}, attrs)
 
-    {:ok, %{entry_group: entry_group}} =
+    result =
       Multi.new()
       |> Multi.insert(:entry_group, entry_group_changeset)
       |> Multi.run(:entry, &create_entries/2)
       |> Repo.transaction()
 
-    {:ok, entry_group}
+    case result do
+      {:ok, %{entry_group: entry_group}} -> {:ok, entry_group}
+      {:error, :entry_group, entry_group_changeset, _} -> {:error, entry_group_changeset}
+    end
   end
 
   defp create_entries(repo, multi_struct, periodicity_buffer_count \\ 0)

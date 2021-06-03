@@ -1,4 +1,4 @@
-<div class="card card-primary" x-data="{showEndDate: false, isRecurrent: false}">
+<div class="card border-0" x-data="{showEndDate: false, isRecurrent: false}">
   <div class="card-header bg-primary text-white">
     <h3>Entrada</h3>
   </div>
@@ -30,13 +30,13 @@
       </div>
 
       <div class="row">
-        <div class="mb-3 col-md-2">
+        <div class="mb-3 col-md-4">
           <%= label f, :start_date, class: "form-label" %>
           <%= text_input f, :start_date, type: "date", class: "form-control" %>
           <%= error_tag f, :start_date %>
         </div>
 
-        <div class="mb-3 col-md-2" x-show="showEndDate">
+        <div class="mb-3 col-md-4" x-show="showEndDate">
           <%= label f, :end_date, class: "form-label" %>
           <%= text_input f, :end_date, type: "date", class: "form-control dn" %>
           <%= error_tag f, :end_date %>
