@@ -37,3 +37,18 @@ msgstr ""
 
 msgid "periodicity_buffer"
 msgstr ""
+
+msgid "day"
+msgid_plural "day_p"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "month"
+msgid_plural "month_p"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "year"
+msgid_plural "year_p"
+msgstr[0] ""
+msgstr[1] ""

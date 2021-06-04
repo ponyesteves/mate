@@ -55,23 +55,15 @@
         <%= error_tag f, :recurrent %>
       </div>
 
-      <div class="row">
-        <div class="mb-3 col-md-2" x-show="isRecurrent">
-          <%= tlabel f, :periodicity_type, class: "form-label"  %>
-          <%= text_input f, :periodicity_type, class: "form-control" %>
-          <%= error_tag f, :periodicity_type %>
-        </div>
-
-        <div class="mb-3 col-md-2" x-show="isRecurrent">
-          <%= tlabel f, :periodicity, class: "form-label"  %>
-          <%= number_input f, :periodicity, class: "form-control" %>
-          <%= error_tag f, :periodicity %>
-        </div>
-
-        <div class="mb-3 col-md-2" x-show="isRecurrent">
-          <%= tlabel f, :periodicity_buffer, class: "form-label"  %>
-          <%= number_input f, :periodicity_buffer, class: "form-control" %>
-          <%= error_tag f, :periodicity_buffer %>
+      <div class="row mb-4" x-show="isRecurrent">
+        <div class="col-md-4">
+          <div class="input-group">
+            <%= tlabel f, :periodicity_type, class: "input-group-text"  %>
+            <%= number_input f, :periodicity, class: "form-control w-25", min: 1 %>
+            <%= select f, :periodicity_type, @periodicity_types, class: "form-select" %>
+            <%= error_tag f, :periodicity_type %>
+            <%= error_tag f, :periodicity %>
+          </div>
         </div>
       </div>
 

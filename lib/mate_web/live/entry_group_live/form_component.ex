@@ -3,15 +3,18 @@ defmodule MateWeb.EntryGroupLive.FormComponent do
   use MateWeb, :live_component
 
   alias Mate.{Conty, Transactions}
+  alias Transactions.EntryGroup
 
   @impl true
   def update(%{entry_group: entry_group} = assigns, socket) do
     changeset = Transactions.change_entry_group(entry_group)
-    accounts = Conty.list_accounts |> Enum.map(& {&1.name, &1.id})
+    accounts = Conty.list_accounts() |> Enum.map(&{&1.name, &1.id})
+    periodicity_types = build_periodicity_types(Ecto.Changeset.get_field(changeset, :periodicity))
 
     {:ok,
      socket
      |> assign(assigns)
+     |> assign(:periodicity_types, periodicity_types)
      |> assign(:changeset, changeset)
      |> assign(:accounts, accounts)}
   end
@@ -23,11 +26,31 @@ defmodule MateWeb.EntryGroupLive.FormComponent do
       |> Transactions.change_entry_group(entry_group_params)
       |> Map.put(:action, :validate)
 
-    {:noreply, assign(socket, :changeset, changeset)}
+    {:noreply,
+     assign(socket,
+       changeset: changeset,
+       periodicity_types: build_periodicity_types(entry_group_params["periodicity"])
+     )}
   end
 
   def handle_event("save", %{"entry_group" => entry_group_params}, socket) do
     save_entry_group(socket, socket.assigns.action, entry_group_params)
+  end
+
+  def build_periodicity_types(periodicity) do
+    periodicity =
+      case periodicity do
+        x when x in ["", nil] -> 0
+        str when is_bitstring(str) -> String.to_integer(str)
+        integer when is_integer(integer) -> integer
+        _ -> raise "Periodicity should be a number"
+      end
+    values = Ecto.Enum.values(EntryGroup, :periodicity_type)
+
+    for value <- values do
+      key = Atom.to_string(value)
+      {Gettext.dngettext(MateWeb.Gettext, "labels", key, "#{key}_p", periodicity, %{}), value}
+    end
   end
 
   defp save_entry_group(socket, :edit, entry_group_params) do

@@ -35,9 +35,26 @@ msgstr "Repite"
 msgid "periodicity"
 msgstr "repetir"
 
-#, fuzzy
 msgid "periodicity_type"
 msgstr "Cada"
 
 msgid "periodicity_buffer"
 msgstr "Mantener adelante"
+
+#, fuzzy
+msgid "day"
+msgid_plural "day_p"
+msgstr[0] "día"
+msgstr[1] "días"
+
+#, fuzzy
+msgid "month"
+msgid_plural "month_p"
+msgstr[0] "mes"
+msgstr[1] "meses"
+
+#, fuzzy
+msgid "year"
+msgid_plural "year_p"
+msgstr[0] "año"
+msgstr[1] "años"
