@@ -6,7 +6,7 @@ defmodule Mate.Conty do
   import Ecto.Query, warn: false
   alias Mate.Repo
 
-  alias Mate.Conty.{Account, Entry, EntryItem}
+  alias Mate.Conty.{Account, Balance, Entry, EntryItem}
 
   def list_accounts do
     Repo.all(Account)
@@ -35,8 +35,8 @@ defmodule Mate.Conty do
   end
 
   @spec entry_items_by_account(String.t(), %{end_date: Date.t()}) ::
-          {:ok, [Entry]} | {:error, String.t()}
-  def entry_items_by_account_type(account_type, %{end_date: end_date}) do
+          {:ok, [Balance]} | {:error, String.t()}
+  def balances_filtered_by_account_type(account_type, %{end_date: end_date}) do
     if account_type in Ecto.Enum.values(Account, :type) do
       {:ok,
        Repo.all(
@@ -46,8 +46,10 @@ defmodule Mate.Conty do
            join: e in Entry,
            on: ei.entry_id == e.id,
            where: a.type == ^account_type and e.date <= ^end_date,
-           preload: [:account]
-       )}
+           group_by: a.id,
+           select: {a, sum(ei.amount)}
+       )
+       |> Enum.map(fn {account, amount} -> %Balance{account: account, amount: amount} end)}
     else
       {:error, "Invalid account type"}
     end

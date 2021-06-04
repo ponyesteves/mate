@@ -13,4 +13,4 @@
 {:ok, bank} = Mate.Conty.create_account(%{name: "Bank", type: "assets"})
 {:ok, income} = Mate.Conty.create_account(%{name: "Income", type: "income"})
 {:ok, receivable} = Mate.Conty.create_account(%{name: "Receivable", type: "assets"})
-{:ok, payable} = Mate.Conty.create_account(%{name: "Receivable", type: "liabilities"})
+{:ok, payable} = Mate.Conty.create_account(%{name: "Payable", type: "liabilities"})

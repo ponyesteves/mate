@@ -44,13 +44,13 @@
       </div>
 
       <div class="mb-3 form-check">
-        <%= tlabel :toggle, :toggle_end_date, class: "form-check-label", for: "toggle_end_date" %>
+        <%= tlabel :toggle, :toggle_end_date, role: "button", class: "form-check-label", for: "toggle_end_date" %>
         <%= checkbox :toggle, :end_date, class: "form-check-input", "@click": "showEndDate = !showEndDate" %>
       </div>
 
 
       <div class="mb-3 form-check">
-        <%= tlabel f, :recurrent, class: "form-check-label" %>
+        <%= tlabel f, :recurrent, role: "button", class: "form-check-label" %>
         <%= checkbox f, :recurrent, class: "form-check-input", "@click": "isRecurrent = !isRecurrent" %>
         <%= error_tag f, :recurrent %>
       </div>
@@ -75,8 +75,10 @@
         </div>
       </div>
 
-      <br>
-      <%= submit "Guardar", phx_disable_with: "Saving...", class: "btn btn-primary" %>
+      <div class="d-flex align-items-baseline">
+        <%= live_patch "Cancelar", to: @return_to, class: "d-block text-secondary me-3" %>
+        <%= submit "Guardar", phx_disable_with: "Saving...", class: "btn btn-primary" %>
+      </div>
     </form>
   </div>
 </div>
