@@ -21,20 +21,34 @@
       <div class="card-body">
         <ul class="list-group">
           <%= for balance <- @balances do %>
-            <li class="list-group__item">
+            <li class="list-group__item text-secondary">
             <div class="row">
               <div class="col-md-4">
                 <%= balance.account.name %>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4 d-flex justify-content-end align-items-center">
                 <%= format_number(balance.amount, sup: :ars) %>
               </div>
               <div class="col-md-4 d-flex justify-content-end align-items-center">
-                <i class="fa fa-gear btn btn-outline-primary"></i>
+                <%= live_component @socket, MateWeb.Dropdown, %{id: balance.account.id} do %>
+                  <li><a class="dropdown-item" href="#">Ajustar Saldo</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <% end %>
               </div>
             </div>
             </li>
           <% end %>
+          <li class="list-group__item bg-secondary text-white">
+            <div class="row">
+              <div class="col-md-4">
+                Total
+              </div>
+              <div class="col-md-4 d-flex justify-content-end align-items-center">
+                <%= Mate.EnumHelpers.totalize(@balances, :amount) |> format_number(sup: :ars) %>
+              </div>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
