@@ -1,4 +1,4 @@
-defmodule MateWeb.Dropdown do
+defmodule MateWeb.Component.Dropdown do
   @moduledoc false
   use MateWeb, :live_component
 

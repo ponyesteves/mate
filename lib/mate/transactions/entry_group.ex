@@ -16,7 +16,7 @@ defmodule Mate.Transactions.EntryGroup do
     field :recurrent, :boolean, default: false
     field :periodicity, :integer, default: 1
     field :periodicity_buffer, :integer, default: 1
-    field :periodicity_type, Ecto.Enum, values: ~w(day month year)a, default: :day
+    field :periodicity_type, Ecto.Enum, values: ~w(day month year)a, default: :month
 
     has_many :entries, Entry
 

@@ -1,4 +1,4 @@
-defmodule MateWeb.ModalComponent do
+defmodule MateWeb.Component.Modal do
   @moduledoc false
   use MateWeb, :live_component
 
