@@ -4,7 +4,8 @@
 
 .card--primary {
   @extend .card;
-  @extend .border-primary;
+  @extend .border-0;
+  @extend .shadow-sm;
 }
 
 .card__header--primary {
@@ -14,6 +15,12 @@
   @extend .d-flex;
   @extend .justify-content-between;
   @extend .align-items-center;
+}
+.card__header-title {
+  @extend .w-100;
+  @extend .text-center;
+  @extend .mb-0;
+  @extend .fs-4;
 }
 
 .list-group__item {

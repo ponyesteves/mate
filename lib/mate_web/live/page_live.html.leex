@@ -11,9 +11,7 @@
     <!-- Candidate for component -->
     <div class="card--primary">
       <div class="card__header--primary">
-        <h5 class="w-100 text-center mb-0">
-          ¿Cuanto tengo?
-        </h5>
+        <div class="card__header-title">¿Cuanto tengo?</div>
         <%= live_patch to: Routes.page_path(@socket, :new), class: "btn btn-primary border-white" do %>
           <i class="fa fa-plus"></i>
         <% end %>
