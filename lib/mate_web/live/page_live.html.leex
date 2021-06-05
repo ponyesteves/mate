@@ -6,6 +6,16 @@
     entry_group: @entry_group,
     return_to: Routes.page_path(@socket, :index) %>
 <% end %>
+
+<%= if @live_action in [:adjust_balance] do %>
+  <%= live_modal @socket, MateWeb.EntryLive.AdjustBalanceComponent,
+    id: @account_id,
+    title: @page_title,
+    action: @live_action,
+    balances: @balances,
+    return_to: Routes.page_path(@socket, :index) %>
+<% end %>
+
 <div class="row pt-4">
   <div class="col-md-6">
     <!-- Candidate for component -->
@@ -29,7 +39,7 @@
               </div>
               <div class="col-md-4 d-flex justify-content-end align-items-center">
                 <%= live_component @socket, MateWeb.DropdownComponent, %{id: balance.account.id} do %>
-                  <li><a class="dropdown-item" href="#">Ajustar Saldo</a></li>
+                  <li><%= live_patch "Corregir", to: Routes.page_path(@socket, :adjust_balance, balance.account), class: "dropdown-item" %></li>
                   <li><a class="dropdown-item" href="#">Another action</a></li>
                   <li><a class="dropdown-item" href="#">Something else here</a></li>
                 <% end %>

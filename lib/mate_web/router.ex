@@ -20,6 +20,7 @@ defmodule MateWeb.Router do
 
     live "/", PageLive, :index
     live "/new", PageLive, :new
+    live "/:id/adjust_balance", PageLive, :adjust_balance
  end
 
   # Other scopes may use custom stacks.

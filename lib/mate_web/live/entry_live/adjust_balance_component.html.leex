@@ -1,0 +1,27 @@
+<div class="card--primary">
+  <div class="card__header--primary">
+    <div class="card__header-title">Corregir Balance</div>
+  </div>
+  <div class="card-body">
+    <%= f = form_for :adjust_balance, "#",
+      id: "adjust_balance-form",
+      phx_target: @myself,
+      phx_submit: "save" %>
+
+      <div class="row">
+        <div class="mb-3 col-md-4">
+          <div class="input-group">
+            <%= tlabel f, :amount, class: "input-group-text" %>
+            <%= number_input f, :amount, step: "any", class: "form-control" %>
+            <%= error_tag f, :amount %>
+          </div>
+        </div>
+        <div class="col-md-4 d-flex align-items-baseline">
+          <%= live_patch "Cancelar", to: @return_to, class: "d-block text-secondary me-3" %>
+          <%= submit "Guardar", phx_disable_with: "Saving...", class: "btn btn-primary" %>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
