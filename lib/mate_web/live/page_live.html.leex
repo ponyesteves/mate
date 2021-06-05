@@ -30,7 +30,7 @@
                 <%= format_number(balance.amount, sup: :ars) %>
               </div>
               <div class="col-md-4 d-flex justify-content-end align-items-center">
-                <%= live_component @socket, MateWeb.Component.Dropdown, %{id: balance.account.id} do %>
+                <%= live_component @socket, MateWeb.DropdownComponent, %{id: balance.account.id} do %>
                   <li><a class="dropdown-item" href="#">Ajustar Saldo</a></li>
                   <li><a class="dropdown-item" href="#">Another action</a></li>
                   <li><a class="dropdown-item" href="#">Something else here</a></li>
