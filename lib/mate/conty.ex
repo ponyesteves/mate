@@ -12,6 +12,15 @@ defmodule Mate.Conty do
     Repo.all(Account)
   end
 
+  def accounts_by_type(type) do
+    with {:ok, type} <- validate_account_type(type) do
+      from(a in Account,
+        where: a.type == ^type
+      )
+      |> Repo.all()
+    end
+  end
+
   def get_account!(id), do: Repo.get!(Account, id)
 
   def create_account(attrs \\ %{}) do
@@ -34,10 +43,10 @@ defmodule Mate.Conty do
     Account.changeset(account, attrs)
   end
 
-  @spec entry_items_by_account(String.t(), %{end_date: Date.t()}) ::
+  @spec entry_items_by_account(Atom.t(), %{end_date: Date.t()}) ::
           {:ok, [Balance]} | {:error, String.t()}
   def balances_filtered_by_account_type(account_type, %{end_date: end_date}) do
-    if account_type in Ecto.Enum.values(Account, :type) do
+    with {:ok, account_type} <- validate_account_type(account_type) do
       {:ok,
        Repo.all(
          from ei in EntryItem,
@@ -50,6 +59,12 @@ defmodule Mate.Conty do
            select: {a, sum(ei.amount)}
        )
        |> Enum.map(fn {account, amount} -> %Balance{account: account, amount: amount} end)}
+    end
+  end
+
+  defp validate_account_type(type) do
+    if type in Ecto.Enum.values(Account, :type) do
+      {:ok, type}
     else
       {:error, "Invalid account type"}
     end

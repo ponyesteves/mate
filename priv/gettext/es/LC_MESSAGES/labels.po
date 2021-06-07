@@ -15,7 +15,7 @@ msgid "amount"
 msgstr "Importe"
 
 msgid "account_debit"
-msgstr "Cuenta Debito"
+msgstr "Cuenta Débito"
 
 msgid "account_credit"
 msgstr "Cuenta Crédito"
@@ -26,8 +26,8 @@ msgstr "Fecha Inicio"
 msgid "end_date"
 msgstr "Fecha Fin"
 
-msgid "toggle_end_date"
-msgstr "Mostrar fecha fin"
+msgid "require_end_date"
+msgstr "Finalizar"
 
 msgid "recurrent"
 msgstr "Repite"
@@ -41,19 +41,16 @@ msgstr "Cada"
 msgid "periodicity_buffer"
 msgstr "Mantener adelante"
 
-#, fuzzy
 msgid "day"
 msgid_plural "day_p"
 msgstr[0] "día"
 msgstr[1] "días"
 
-#, fuzzy
 msgid "month"
 msgid_plural "month_p"
 msgstr[0] "mes"
 msgstr[1] "meses"
 
-#, fuzzy
 msgid "year"
 msgid_plural "year_p"
 msgstr[0] "año"

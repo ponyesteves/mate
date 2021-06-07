@@ -1,74 +1,74 @@
-<div class="card--primary" x-data="{showEndDate: false, isRecurrent: false}">
+<div class="card">
   <div class="card__header--primary">
     <div class="card__header-title">Entrada</div>
   </div>
   <div class="card-body">
     <%= f = form_for @changeset, "#",
       id: "entry_group-form",
-      phx_target: @myself,
       phx_change: "validate",
+      phx_target: @myself,
       phx_submit: "save" %>
 
       <div class="row">
-        <div class="mb-3 col-md-4">
-          <%= tlabel f, :amount, class: "form-label" %>
+        <div class="mb-3 col-md-6">
+          <div class="input-group">
+          <%= label f, "Cargar", class: "input-group-text w-6em" %>
           <%= number_input f, :amount, step: "any", class: "form-control" %>
           <%= error_tag f, :amount %>
         </div>
       </div>
 
-      <div class="row">
-        <div class="mb-3 col-md-4">
-          <%= tlabel f, :account_debit, class: "form-label" %>
-          <%= select f, :account_debit_id, @accounts, class: "form-select" %>
-          <%= error_tag f, :account_debit_id %>
+        <div class="mb-3 col-md-6">
+          <div class="input-group">
+            <%= label f, "en", class: "input-group-text w-6em" %>
+            <%= select f, :account_debit_id, @debit_accounts, class: "form-select" %>
+            <%= error_tag f, :account_debit_id %>
+          </div>
         </div>
 
-        <div class="mb-3 col-md-4">
+        <div class="mb-3 col-md-6 d-none">
           <%= tlabel f, :account_credit, class: "form-label" %>
-          <%= select f, :account_credit_id, @accounts, class: "form-select"%>
+          <%= select f, :account_credit_id, @credit_accounts, class: "form-select"%>
           <%= error_tag f, :account_credit_id %>
         </div>
       </div>
 
       <div class="row">
-        <div class="mb-3 col-md-4">
-          <%= tlabel f, :start_date, class: "form-label" %>
-          <%= text_input f, :start_date, type: "date", class: "form-control" %>
-          <%= error_tag f, :start_date %>
-        </div>
-
-        <div class="mb-3 col-md-4" x-show="showEndDate">
-          <%= tlabel f, :end_date, class: "form-label" %>
-          <%= text_input f, :end_date, type: "date", class: "form-control dn" %>
-          <%= error_tag f, :end_date %>
-        </div>
-      </div>
-
-      <div class="mb-3 form-check">
-        <%= tlabel :toggle, :toggle_end_date, role: "button", class: "form-check-label", for: "toggle_end_date" %>
-        <%= checkbox :toggle, :end_date, class: "form-check-input", "@click": "showEndDate = !showEndDate" %>
-      </div>
-
-
-      <div class="mb-3 form-check">
-        <%= tlabel f, :recurrent, role: "button", class: "form-check-label" %>
-        <%= checkbox f, :recurrent, class: "form-check-input", "@click": "isRecurrent = !isRecurrent" %>
-        <%= error_tag f, :recurrent %>
-      </div>
-
-      <div class="row mb-4" x-show="isRecurrent">
-        <div class="col-md-4">
+        <div class="mb-3 col-md-6">
           <div class="input-group">
-            <%= tlabel f, :periodicity_type, class: "input-group-text"  %>
-            <%= number_input f, :periodicity, class: "form-control w-25", min: 1 %>
-            <%= select f, :periodicity_type, @periodicity_types, class: "form-select" %>
-            <%= error_tag f, :periodicity_type %>
-            <%= error_tag f, :periodicity %>
+            <%= label f, "Con fecha", class: "input-group-text w-6em" %>
+            <%= text_input f, :start_date, type: "date", class: "form-control" %>
+            <%= error_tag f, :start_date %>
+          </div>
+        </div>
+        <div class="mb-3 col-md-6">
+          <div class="input-group">
+            <%= select f, :recurrent, [{"Por única vez", false}, {"Se repite", true}], class: "form-select" %>
           </div>
         </div>
       </div>
 
+      <%= if Ecto.Changeset.get_field(@changeset, :recurrent) do %>
+      <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+          <div class="input-group">
+              <%= tlabel f, :periodicity_type, class: "input-group-text w-6em"  %>
+              <%= number_input f, :periodicity, class: "form-control", style: "max-width: 5em", min: 1, max: 365 %>
+              <%= select f, :periodicity_type, @periodicity_types, class: "form-select" %>
+              <%= error_tag f, :periodicity %>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="input-group">
+              <%= select f, :require_end_date, [{"y no finaliza", false}, {"y finaliza el", true}], class: "form-select w-9em" %>
+              <%= if Ecto.Changeset.get_field(@changeset, :require_end_date) do %>
+                <%= text_input f, :end_date, type: "date", class: "form-control" %>
+                <%= error_tag f, :end_date %>
+              <% end %>
+          </div>
+        </div>
+      </div>
+      <% end %>
       <div class="d-flex align-items-baseline">
         <%= live_patch "Cancelar", to: @return_to, class: "d-block text-secondary me-3" %>
         <%= submit "Guardar", phx_disable_with: "Saving...", class: "btn btn-primary" %>

@@ -11,6 +11,7 @@ defmodule Mate.Transactions.EntryGroup do
   schema "entry_groups" do
     field :status, :string, default: "active"
     field :start_date, :date
+    field :require_end_date, :boolean, default: false, virtual: true
     field :end_date, :date
     field :amount, :decimal
     field :recurrent, :boolean, default: false
@@ -30,7 +31,39 @@ defmodule Mate.Transactions.EntryGroup do
   @doc false
   def changeset(entry_group, attrs) do
     entry_group
-    |> cast(attrs, [:start_date, :end_date, :amount, :recurrent, :periodicity_type, :periodicity, :periodicity_buffer, :account_debit_id, :account_credit_id])
-    |> validate_required([:status, :amount, :start_date, :recurrent, :periodicity_type, :periodicity, :periodicity_buffer, :account_debit_id, :account_credit_id])
+    |> cast(attrs, [
+      :start_date,
+      :end_date,
+      :amount,
+      :recurrent,
+      :periodicity_type,
+      :periodicity,
+      :periodicity_buffer,
+      :account_debit_id,
+      :account_credit_id,
+      :require_end_date
+    ])
+    |> validate_required([
+      :status,
+      :amount,
+      :start_date,
+      :recurrent,
+      :periodicity_type,
+      :periodicity,
+      :periodicity_buffer,
+      :account_debit_id,
+      :account_credit_id
+    ])
+    |> validate_end_date
+  end
+
+  def validate_end_date(changeset) do
+    require_end_date = get_field(changeset, :require_end_date)
+
+    if require_end_date do
+      validate_required(changeset, [:end_date])
+    else
+      changeset
+    end
   end
 end

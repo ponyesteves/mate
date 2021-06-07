@@ -23,7 +23,7 @@ msgstr ""
 msgid "end_date"
 msgstr ""
 
-msgid "toggle_end_date"
+msgid "require_end_date"
 msgstr ""
 
 msgid "recurrent"

@@ -1,4 +1,3 @@
-alias Mate.Conty
+alias Mate.{Conty, Transaction, Repo}
 alias Conty.{Account, Entry, EntryItem}
-alias Mate.Transaction
 alias Transaction.EntryGroup

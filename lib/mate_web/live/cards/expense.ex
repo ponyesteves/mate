@@ -1,4 +1,4 @@
-defmodule MateWeb.AvailableCard do
+defmodule MateWeb.ExpenseCard do
   @moduledoc false
   use MateWeb, :live_component
 
@@ -6,9 +6,9 @@ defmodule MateWeb.AvailableCard do
   def render(assigns) do
     ~L"""
     <div class="card">
-      <div class="card__header--primary">
-        <div class="card__header-title">Disponible</div>
-        <%= live_patch to: Routes.page_path(@socket, :new), class: "btn btn-primary border-white" do %>
+      <div class="card__header--danger">
+        <div class="card__header-title">Gastos</div>
+        <%= live_patch to: Routes.page_path(@socket, :new), class: "btn btn-danger border-white" do %>
           <i class="fa fa-plus"></i>
         <% end %>
       </div>
@@ -24,7 +24,7 @@ defmodule MateWeb.AvailableCard do
                 <%= format_number(balance.amount, sup: :ars) %>
               </div>
               <div class="col-4 d-flex justify-content-end align-items-center">
-                <%= live_component @socket, MateWeb.DropdownComponent, %{id: "available_#{balance.account.id}"} do %>
+                <%= live_component @socket, MateWeb.DropdownComponent, %{id: "expense_#{balance.account.id}"} do %>
                   <li>
                     <%= live_patch "Corregir", to: Routes.page_path(@socket, :adjust_balance, balance.account), class: "dropdown-item" %>
                   </li>

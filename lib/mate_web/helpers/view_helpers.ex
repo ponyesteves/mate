@@ -3,6 +3,10 @@ defmodule MateWeb.ViewHelpers do
   import Phoenix.HTML.Form, only: [label: 4]
   import Phoenix.HTML, only: [sigil_E: 2]
 
+  def to_select(enum) do
+    Enum.map(enum, &{&1.name, &1.id})
+  end
+
   def t(msg) do
     Gettext.gettext(MateWeb.Gettext, msg)
   end

@@ -1,4 +1,4 @@
-<div class="card--primary">
+<div class="card">
   <div class="card__header--primary">
     <div class="card__header-title">Corregir Balance</div>
   </div>
@@ -18,7 +18,7 @@
         </div>
         <div class="mb-3 col-md-4">
           <div class="input-group">
-            <%= tlabel f, :account_credit_id, class: "input-group-text" %>
+            <%= tlabel f, :account_credit, class: "input-group-text" %>
             <%= select f, :target_account_id, @accounts, class: "form-select" %>
             <%= error_tag f, :target_account_id %>
           </div>

@@ -6,17 +6,28 @@ defmodule MateWeb.EntryGroupLive.FormComponent do
   alias Transactions.EntryGroup
 
   @impl true
+  def mount(socket) do
+    debit_accounts = Conty.accounts_by_type(:assets) |> to_select
+    credit_accounts = Conty.accounts_by_type(:income) |> to_select
+
+    {:ok,
+     socket
+     |> assign(debit_accounts: debit_accounts)
+     |> assign(credit_accounts: credit_accounts)}
+  end
+
+  @impl true
   def update(%{entry_group: entry_group} = assigns, socket) do
     changeset = Transactions.change_entry_group(entry_group)
-    accounts = Conty.list_accounts() |> Enum.map(&{&1.name, &1.id})
-    periodicity_types = build_periodicity_types(Ecto.Changeset.get_field(changeset, :periodicity))
+
+    periodicity_types =
+      build_periodicity_types_select_options(Ecto.Changeset.get_field(changeset, :periodicity))
 
     {:ok,
      socket
      |> assign(assigns)
      |> assign(:periodicity_types, periodicity_types)
-     |> assign(:changeset, changeset)
-     |> assign(:accounts, accounts)}
+     |> assign(:changeset, changeset)}
   end
 
   @impl true
@@ -29,7 +40,8 @@ defmodule MateWeb.EntryGroupLive.FormComponent do
     {:noreply,
      assign(socket,
        changeset: changeset,
-       periodicity_types: build_periodicity_types(entry_group_params["periodicity"])
+       periodicity_types:
+         build_periodicity_types_select_options(entry_group_params["periodicity"])
      )}
   end
 
@@ -37,7 +49,7 @@ defmodule MateWeb.EntryGroupLive.FormComponent do
     save_entry_group(socket, socket.assigns.action, entry_group_params)
   end
 
-  def build_periodicity_types(periodicity) do
+  defp build_periodicity_types_select_options(periodicity) do
     periodicity =
       case periodicity do
         x when x in ["", nil] -> 0
@@ -45,6 +57,7 @@ defmodule MateWeb.EntryGroupLive.FormComponent do
         integer when is_integer(integer) -> integer
         _ -> raise "Periodicity should be a number"
       end
+
     values = Ecto.Enum.values(EntryGroup, :periodicity_type)
 
     for value <- values do

@@ -2,13 +2,24 @@
 // @import './phoenix.css';
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
 
-.card--primary {
+.w-9em {
+  width: 9em;
+  max-width: 9em;
+}
+
+.w-6em {
+  width: 6em;
+  max-width: 6em;
+}
+
+.card {
   @extend .card;
   @extend .border-0;
   @extend .shadow-sm;
 }
 
-.card__header--primary {
+.card__header--primary,
+.card__header--danger {
   @extend .card-header;
   @extend .bg-primary;
   @extend .text-white;
@@ -16,6 +27,11 @@
   @extend .justify-content-between;
   @extend .align-items-center;
 }
+
+.card__header--danger {
+  @extend .bg-danger;
+}
+
 .card__header-title {
   @extend .w-100;
   @extend .text-center;

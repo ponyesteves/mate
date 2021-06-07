@@ -10,7 +10,9 @@ defmodule MateWeb.PageLive do
 
     {:ok, balances} = Conty.balances_filtered_by_account_type(:assets, %{end_date: Date.utc_today()})
 
-    {:ok, assign(socket, balances: balances)}
+    {:ok, expenses} = Conty.balances_filtered_by_account_type(:liabilities, %{end_date: Timex.end_of_month(Date.utc_today())})
+
+    {:ok, assign(socket, balances: balances, expenses: expenses)}
   end
 
   @impl true
