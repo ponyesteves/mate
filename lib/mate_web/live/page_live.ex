@@ -4,7 +4,6 @@ defmodule MateWeb.PageLive do
   alias Mate.Conty
 
   alias Mate.Transactions.EntryGroup
-  alias Mate.Conty.Entry
 
   @impl true
   def mount(_params, _session, socket) do
@@ -27,9 +26,17 @@ defmodule MateWeb.PageLive do
     |> assign(:entry_group, %EntryGroup{start_date: Date.utc_today()})
   end
 
+  defp apply_action(socket, :move_balance, %{"id" => account_id}) do
+    socket
+    |> assign(:page_title, "Mover Balance")
+    |> assign(:form_component, MateWeb.EntryLive.MoveBalanceComponent)
+    |> assign(:account_id, account_id)
+  end
+
   defp apply_action(socket, :adjust_balance, %{"id" => account_id}) do
     socket
     |> assign(:page_title, "Ajustar Balance")
+    |> assign(:form_component, MateWeb.EntryLive.AdjustBalanceComponent)
     |> assign(:account_id, account_id)
   end
 end

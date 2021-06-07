@@ -3,7 +3,6 @@ defmodule MateWeb.EntryLive.AdjustBalanceComponent do
   use MateWeb, :live_component
 
   alias Mate.Conty
-  alias Conty.Entry
 
   @impl true
   def update(assigns, socket) do
