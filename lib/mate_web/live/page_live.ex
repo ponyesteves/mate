@@ -5,8 +5,11 @@ defmodule MateWeb.PageLive do
 
   alias Mate.Transactions.EntryGroup
 
+  @topic "test_pub_sub"
+
   @impl true
   def mount(_params, _session, socket) do
+    MateWeb.Endpoint.subscribe(@topic)
 
     {:ok, balances} = Conty.balances_filtered_by_account_type(:assets, %{end_date: Date.utc_today()})
 
@@ -16,11 +19,22 @@ defmodule MateWeb.PageLive do
   end
 
   @impl true
+  def handle_info(%{topic: @topic, event: "refresh", payload: %{balances: balances, expenses: expenses}}, socket) do
+
+    {:noreply, assign(socket, balances: balances, expenses: expenses)}
+  end
+
+  @impl true
   def handle_params(params, _url, socket) do
+
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  defp apply_action(socket, :index, _params), do: socket
+  defp apply_action(socket, :index, _params) do
+    MateWeb.Endpoint.broadcast_from(self(), @topic, "refresh", socket.assigns)
+
+    socket
+  end
 
   defp apply_action(socket, :new, _params) do
     socket
