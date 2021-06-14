@@ -12,10 +12,13 @@ defmodule Mate.Conty do
     Repo.all(Account)
   end
 
-  def accounts_by_type(type) do
+  def accounts_by_type(type, opts \\ []) do
+    except_ids = Keyword.get(opts, :except, [])
+
     with {:ok, type} <- validate_account_type(type) do
       from(a in Account,
-        where: a.type == ^type
+        where: a.type == ^type,
+        where: a.id not in ^except_ids
       )
       |> Repo.all()
     end
