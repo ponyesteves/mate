@@ -3,9 +3,14 @@ defmodule Mate.Conty.Account do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Mate.Taggable.Tagging
+
   schema "accounts" do
     field :name, :string
     field :type, Ecto.Enum, values: ~w(assets liabilities equity income outcome)a
+
+    has_many :taggings, Tagging, where: [ taggable_type: "#{__MODULE__}" ], foreign_key: :taggable_id
+    has_many :tag, through: [:taggings, :tags]
 
     timestamps()
   end
@@ -18,3 +23,4 @@ defmodule Mate.Conty.Account do
     |> validate_inclusion(:type, Ecto.Enum.values(__MODULE__, :type))
   end
 end
+

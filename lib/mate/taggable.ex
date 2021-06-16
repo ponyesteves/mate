@@ -8,6 +8,12 @@ defmodule Mate.Taggable do
 
   alias Mate.Taggable.Tag
 
+  def tag(%{__struct__: module, id: taggable_id}, tag_name) do
+    {:ok, tag} = create_tag(%{name: tag_name})
+
+    create_tagging(%{tag_id: tag.id, taggable_id: taggable_id, taggable_type: "#{module}"})
+  end
+
   @doc """
   Returns the list of tags.
 

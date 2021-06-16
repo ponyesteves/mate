@@ -5,15 +5,15 @@ defmodule Mate.Taggable.Tagging do
   schema "taggings" do
     field :taggable_id, :integer
     field :tag_id, :id
-
     field :taggable_type, :string
+
     timestamps()
   end
 
   @doc false
   def changeset(tagging, attrs) do
     tagging
-    |> cast(attrs, [:taggable_id])
-    |> validate_required([:taggable_id])
+    |> cast(attrs, [:tag_id, :taggable_id, :taggable_type])
+    |> validate_required([:tag_id, :taggable_id, :taggable_type])
   end
 end
