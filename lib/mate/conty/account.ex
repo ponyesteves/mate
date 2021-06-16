@@ -10,7 +10,7 @@ defmodule Mate.Conty.Account do
     field :type, Ecto.Enum, values: ~w(assets liabilities equity income outcome)a
 
     has_many :taggings, Tagging, where: [ taggable_type: "#{__MODULE__}" ], foreign_key: :taggable_id
-    has_many :tag, through: [:taggings, :tags]
+    has_many :tags, through: [:taggings, :tag]
 
     timestamps()
   end

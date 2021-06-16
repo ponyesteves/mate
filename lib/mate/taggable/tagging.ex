@@ -2,11 +2,13 @@ defmodule Mate.Taggable.Tagging do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Mate.Taggable.Tag
+
   schema "taggings" do
     field :taggable_id, :integer
-    field :tag_id, :id
     field :taggable_type, :string
 
+    belongs_to :tag, Tag
     timestamps()
   end
 
