@@ -1,3 +1,4 @@
-alias Mate.{Conty, Transaction, Repo}
+alias Mate.{Conty, Transaction, Repo, Taggable}
 alias Conty.{Account, Entry, EntryItem}
 alias Transaction.EntryGroup
+alias Taggable.{Tagging, Tag}

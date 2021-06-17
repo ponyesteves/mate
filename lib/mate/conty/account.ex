@@ -1,17 +1,15 @@
 defmodule Mate.Conty.Account do
   @moduledoc false
   use Ecto.Schema
-  import Ecto.Changeset
+  use Mate.Taggable
 
-  alias Mate.Taggable.Tagging
+  import Ecto.Changeset
 
   schema "accounts" do
     field :name, :string
     field :type, Ecto.Enum, values: ~w(assets liabilities equity income outcome)a
 
-    has_many :taggings, Tagging, where: [ taggable_type: "#{__MODULE__}" ], foreign_key: :taggable_id
-    has_many :tags, through: [:taggings, :tag]
-
+    taggable()
     timestamps()
   end
 

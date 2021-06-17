@@ -203,4 +203,25 @@ defmodule Mate.Taggable do
   def change_tagging(%Tagging{} = tagging, attrs \\ %{}) do
     Tagging.changeset(tagging, attrs)
   end
+
+  alias Mate.Taggable.Tagging
+
+  @doc """
+  Include this macro to a schema to make it taggable
+  """
+  defmacro taggable do
+    quote do
+      has_many :taggings, Tagging,
+        where: [taggable_type: "#{__MODULE__}"],
+        foreign_key: :taggable_id
+
+      has_many :tags, through: [:taggings, :tag]
+    end
+  end
+
+  defmacro __using__(only \\ []) do
+    quote do
+      import Mate.Taggable, only: [taggable: 0]
+    end
+  end
 end
