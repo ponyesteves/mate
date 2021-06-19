@@ -10,7 +10,7 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-{:ok, bank} = Mate.Conty.create_account(%{name: "Bank", type: "assets"})
-{:ok, income} = Mate.Conty.create_account(%{name: "Income", type: "income"})
-{:ok, receivable} = Mate.Conty.create_account(%{name: "Receivable", type: "assets"})
-{:ok, payable} = Mate.Conty.create_account(%{name: "Payable", type: "liabilities"})
+Mate.Conty.create_account(%{name: "Bank", type: "assets"})
+Mate.Conty.create_account(%{name: "Income", type: "income"})
+Mate.Conty.create_account(%{name: "Receivable", type: "assets"})
+Mate.Conty.create_account(%{name: "Payable", type: "liabilities"})

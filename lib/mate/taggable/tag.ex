@@ -4,6 +4,7 @@ defmodule Mate.Taggable.Tag do
 
   schema "tags" do
     field :name, :string
+    field :taggable_type, :string
 
     timestamps()
   end
@@ -11,7 +12,8 @@ defmodule Mate.Taggable.Tag do
   @doc false
   def changeset(tag, attrs) do
     tag
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :taggable_type])
+    |> validate_required([:name, :taggable_type])
+    |> unique_constraint([:name, :taggable_type])
   end
 end
