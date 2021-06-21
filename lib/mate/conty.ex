@@ -7,7 +7,6 @@ defmodule Mate.Conty do
   alias Mate.Repo
 
   alias Mate.Conty.{Account, Balance, Entry, EntryItem}
-
   def list_accounts do
     Repo.all(Account)
   end
