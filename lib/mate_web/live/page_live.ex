@@ -16,9 +16,9 @@ defmodule MateWeb.PageLive do
     {:ok, assets_balances} =
       Conty.balances_filtered_by_account_type(:assets, %{end_date: Date.utc_today()})
 
-    balances = Taggable.reject(assets_balances, "savings")
+    balances = Taggable.reject(assets_balances, :savings)
 
-    savings = Taggable.filter(assets_balances, "savings")
+    savings = Taggable.filter(assets_balances, :savings)
 
     {:ok, expenses} =
       Conty.balances_filtered_by_account_type(:liabilities, %{
