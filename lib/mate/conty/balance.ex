@@ -4,11 +4,18 @@ defmodule Mate.Conty.Balance do
   import Ecto.Changeset
 
   alias Mate.Conty.Account
+  alias Mate.Taggable.Tagging
 
   embedded_schema do
     field :amount, :decimal
 
     belongs_to :account, Account
+
+    has_many :taggings, Tagging,
+      where: [taggable_type: "#{Account}"],
+      foreign_key: :taggable_id
+
+    has_many :tags, through: [:taggings, :tag]
   end
 
   @doc false

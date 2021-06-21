@@ -60,7 +60,7 @@ defmodule Mate.Conty do
            group_by: a.id,
            select: {a, sum(ei.amount)}
        )
-       |> Enum.map(fn {account, amount} -> %Balance{account: account, amount: amount} end)}
+       |> Enum.map(fn {account, amount} -> %Balance{id: account.id, account: account, amount: amount} end)}
     end
   end
 

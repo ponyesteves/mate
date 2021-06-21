@@ -32,6 +32,11 @@ defmodule Mate.Taggable do
     |> Enum.filter(fn taggable -> Enum.any?(taggable.tags, & &1.name == tag_name) end)
   end
 
+  def reject(taggable, tag_name) do
+    Repo.preload(taggable, :tags)
+    |> Enum.reject(fn taggable -> Enum.any?(taggable.tags, & &1.name == tag_name) end)
+  end
+
   def list_tags(module) do
     from(t in Tag,
       where: t.taggable_type == ^"#{module}"

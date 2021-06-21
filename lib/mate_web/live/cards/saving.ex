@@ -1,4 +1,4 @@
-defmodule MateWeb.AvailableCard do
+defmodule MateWeb.SavingCard do
   @moduledoc false
   use MateWeb, :live_component
 
@@ -6,8 +6,8 @@ defmodule MateWeb.AvailableCard do
   def render(assigns) do
     ~L"""
     <div class="card">
-      <div class="card__header--primary">
-        <div class="card__header-title">Disponible</div>
+      <div class="card__header--success">
+        <div class="card__header-title">Ahorros</div>
         <%= live_patch to: Routes.page_path(@socket, :new), class: "btn btn-primary border-white" do %>
           <i class="fa fa-plus"></i>
         <% end %>
@@ -32,9 +32,9 @@ defmodule MateWeb.AvailableCard do
                     <%= live_patch "Mover", to: Routes.page_path(@socket, :move_balance, balance.account), class: "dropdown-item" %>
                   </li>
                   <li>
-                    <%= live_patch "Cuenta de ahorro", to: Routes.page_path(@socket, :tag_account, balance.account, "savings"), class: "dropdown-item" %>
+                    <%= live_patch "Mover a disponible", to: Routes.page_path(@socket, :untag_account, balance.account, "savings"), class: "dropdown-item" %>
                   </li>
-                <% end %>
+                  <% end %>
               </div>
             </div>
             </li>

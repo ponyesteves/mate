@@ -19,7 +19,8 @@
 }
 
 .card__header--primary,
-.card__header--danger {
+.card__header--danger,
+.card__header--success {
   @extend .card-header;
   @extend .bg-primary;
   @extend .text-white;
@@ -30,6 +31,10 @@
 
 .card__header--danger {
   @extend .bg-danger;
+}
+
+.card__header--success {
+  @extend .bg-success;
 }
 
 .card__header-title {

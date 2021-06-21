@@ -10,5 +10,6 @@ defmodule Mate.Repo.Migrations.CreateTaggings do
     end
 
     create index(:taggings, [:tag_id])
+    create unique_index(:taggings, [:tag_id, :taggable_id, :taggable_type])
   end
 end
