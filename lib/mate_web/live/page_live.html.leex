@@ -7,6 +7,15 @@
     return_to: Routes.page_path(@socket, :index) %>
 <% end %>
 
+<%= if @live_action in [:new_outcome] do %>
+  <%= live_modal @socket, MateWeb.EntryGroupLive.OutcomeComponent,
+    id: @entry_group.id || :new,
+    title: @page_title,
+    action: @live_action,
+    entry_group: @entry_group,
+    return_to: Routes.page_path(@socket, :index) %>
+<% end %>
+
 <%= if @live_action in [:move_balance, :adjust_balance] do %>
   <%= live_modal @socket, @form_component,
     id: @account_id,

@@ -3,7 +3,7 @@ defmodule MateWeb.PageLive do
   use MateWeb, :live_view
   alias Mate.Conty
 
-  alias Mate.Transactions.EntryGroup
+  alias Mate.Transactions.{EntryGroup, OutcomeEntryGroup}
 
   alias Mate.Taggable
 
@@ -30,10 +30,13 @@ defmodule MateWeb.PageLive do
 
   @impl true
   def handle_info(
-        %{topic: @topic, event: "refresh", payload: %{balances: balances, savings: savings, expenses: expenses}},
+        %{
+          topic: @topic,
+          event: "refresh",
+          payload: %{balances: balances, savings: savings, expenses: expenses}
+        },
         socket
       ) do
-
     {:noreply, assign(socket, balances: balances, savings: savings, expenses: expenses)}
   end
 
@@ -51,6 +54,12 @@ defmodule MateWeb.PageLive do
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "Nueva entrada")
+    |> assign(:entry_group, %EntryGroup{start_date: Date.utc_today()})
+  end
+
+  defp apply_action(socket, :new_outcome, _params) do
+    socket
+    |> assign(:page_title, "Gasto")
     |> assign(:entry_group, %EntryGroup{start_date: Date.utc_today()})
   end
 

@@ -8,7 +8,7 @@ defmodule MateWeb.ExpenseCard do
     <div class="card">
       <div class="card__header--danger">
         <div class="card__header-title">Gastos</div>
-        <%= live_patch to: Routes.page_path(@socket, :new), class: "btn btn-danger border-white" do %>
+        <%= live_patch to: Routes.page_path(@socket, :new_outcome), class: "btn btn-danger border-white" do %>
           <i class="fa fa-plus"></i>
         <% end %>
       </div>
