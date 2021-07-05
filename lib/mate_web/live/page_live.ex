@@ -33,6 +33,7 @@ defmodule MateWeb.PageLive do
         %{topic: @topic, event: "refresh", payload: %{balances: balances, savings: savings, expenses: expenses}},
         socket
       ) do
+
     {:noreply, assign(socket, balances: balances, savings: savings, expenses: expenses)}
   end
 

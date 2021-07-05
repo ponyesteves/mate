@@ -7,6 +7,7 @@ defmodule Mate.Conty do
   alias Mate.Repo
 
   alias Mate.Conty.{Account, Balance, Entry, EntryItem}
+
   def list_accounts do
     Repo.all(Account)
   end
@@ -19,8 +20,8 @@ defmodule Mate.Conty do
         where: a.type == ^type,
         where: a.id not in ^except_ids
       )
-      |> Repo.all()
     end
+    |> Repo.all()
   end
 
   def get_account!(id), do: Repo.get!(Account, id)
@@ -60,7 +61,9 @@ defmodule Mate.Conty do
            group_by: a.id,
            select: {a, sum(ei.amount)}
        )
-       |> Enum.map(fn {account, amount} -> %Balance{id: account.id, account: account, amount: amount} end)}
+       |> Enum.map(fn {account, amount} ->
+         %Balance{id: account.id, account: account, amount: amount}
+       end)}
     end
   end
 
