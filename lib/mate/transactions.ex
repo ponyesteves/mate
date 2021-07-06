@@ -45,8 +45,8 @@ defmodule Mate.Transactions do
       account_credit_id: entry_group.account_credit_id,
       account_debit_id: entry_group.account_debit_id,
       entry_items: [
-        %{amount: entry_group.amount, account_id: entry_group.account_credit_id, source_id: entry_group.account_debit_id},
-        %{amount: Decimal.negate(entry_group.amount), account_id: entry_group.account_debit_id, source_id: entry_group.account_credit_id}
+        %{amount: Decimal.negate(entry_group.amount), account_id: entry_group.account_credit_id, source_id: entry_group.account_debit_id},
+        %{amount: entry_group.amount, account_id: entry_group.account_debit_id, source_id: entry_group.account_credit_id}
       ]
     }
 

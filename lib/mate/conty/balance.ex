@@ -10,6 +10,7 @@ defmodule Mate.Conty.Balance do
     field :amount, :decimal
 
     belongs_to :account, Account
+    belongs_to :source, Account
 
     has_many :taggings, Tagging,
       where: [taggable_type: "#{Account}"],
@@ -21,7 +22,7 @@ defmodule Mate.Conty.Balance do
   @doc false
   def changeset(account, attrs) do
     account
-    |> cast(attrs, [:amount, :account_id])
+    |> cast(attrs, [:amount, :account_id, :source_id])
     |> validate_required([:amount, :account_id])
   end
 end
