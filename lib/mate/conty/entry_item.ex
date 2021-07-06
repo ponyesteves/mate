@@ -10,13 +10,16 @@ defmodule Mate.Conty.EntryItem do
     belongs_to :entry, Entry
     belongs_to :account, Account
 
+    # i.e. the outcome account on a payable
+    belongs_to :source, Account
+
     timestamps()
   end
 
   @doc false
   def changeset(entry_item, attrs) do
     entry_item
-    |> cast(attrs, [:amount, :account_id])
+    |> cast(attrs, [:amount, :account_id, :source_id])
     |> validate_required([:amount, :account_id])
   end
 end

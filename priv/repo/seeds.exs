@@ -10,7 +10,11 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-Mate.Conty.create_account(%{name: "Bank", type: "assets"})
-Mate.Conty.create_account(%{name: "Income", type: "income"})
-Mate.Conty.create_account(%{name: "Receivable", type: "assets"})
-Mate.Conty.create_account(%{name: "Payable", type: "liabilities"})
+Mate.Conty.create_account(%{name: "Banco", type: "assets"})
+Mate.Conty.create_account(%{name: "Freelance", type: "income"})
+Mate.Conty.create_account(%{name: "Sueldo", type: "income"})
+Mate.Conty.create_account(%{name: "Colegio", type: "outcome"})
+Mate.Conty.create_account(%{name: "Energía", type: "outcome"})
+Mate.Conty.create_account(%{name: "Gas", type: "outcome"})
+Mate.Conty.create_account(%{name: "Cobros pendientes", type: "assets"})
+Mate.Conty.create_account(%{name: "Pagos pendientes", type: "liabilities"})

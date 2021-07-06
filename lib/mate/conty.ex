@@ -46,26 +46,50 @@ defmodule Mate.Conty do
     Account.changeset(account, attrs)
   end
 
-  @spec entry_items_by_account(Atom.t(), %{end_date: Date.t()}) ::
-          {:ok, [Balance]} | {:error, String.t()}
-  def balances_filtered_by_account_type(account_type, %{end_date: end_date}) do
+  defp entry_items_with_source_filtered_by_account_type(account_type, %{end_date: end_date}) do
     with {:ok, account_type} <- validate_account_type(account_type) do
       {:ok,
-       Repo.all(
-         from ei in EntryItem,
-           join: a in Account,
-           on: ei.account_id == a.id,
-           join: e in Entry,
-           on: ei.entry_id == e.id,
-           where: a.type == ^account_type and e.date <= ^end_date,
-           group_by: a.id,
-           select: {a, sum(ei.amount)}
-       )
+       from(ei in EntryItem,
+         join: a in Account,
+         on: ei.account_id == a.id,
+         join: e in Entry,
+         on: ei.entry_id == e.id,
+         where: a.type == ^account_type and e.date <= ^end_date,
+         group_by: [a.id, ei.source_id],
+         select: %{account: a, sum: sum(ei.amount), source: ei.source_id}
+       ) |> Repo.all }
+    end
+  end
+
+  @spec balances_filtered_by_account_type(Atom.t(), %{end_date: Date.t()}) ::
+          {:ok, [Balance]} | {:error, String.t()}
+  def balances_filtered_by_account_type(account_type, opts) do
+    with {:ok, query} <- balances_filtered_by_account_type_query(account_type, opts) do
+      {:ok,
+       |> Enum.map(fn {account, amount, _source} ->
+         %Balance{id: account.id, account: account, amount: amount}
+       end)}
+    end
+  end
+
+  @spec balances_with_source_filtered_by_account_type(Atom.t(), %{end_date: Date.t()}) ::
+          {:ok, [Balance]} | {:error, String.t()}
+  def balances_with_source_filtered_by_account_type(account_type, opts) do
+    with {:ok, query} <- balances_filtered_by_account_type_query(account_type, opts) do
+      query = from(q in query,
+      join: c in Account,
+      on: c.source_id == c.id,
+      group_by: c.id,
+      select: {c, sum(q.amount)})
+
+      {:ok,
+       Repo.all(query)
        |> Enum.map(fn {account, amount} ->
          %Balance{id: account.id, account: account, amount: amount}
        end)}
     end
   end
+
 
   defp validate_account_type(type) do
     if type in Ecto.Enum.values(Account, :type) do
