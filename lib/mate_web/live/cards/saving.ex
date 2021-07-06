@@ -26,7 +26,7 @@ defmodule MateWeb.SavingCard do
               <div class="col-4 d-flex justify-content-end align-items-center">
                 <%= live_component @socket, MateWeb.DropdownComponent, %{id: "available_#{balance.account.id}"} do %>
                   <li>
-                    <%= live_patch "Corregir", to: Routes.page_path(@socket, :adjust_balance, balance.account), class: "dropdown-item" %>
+                    <%= live_patch "Corregir", to: Routes.page_path(@socket, :adjust_balance, balance.account, "savings"), class: "dropdown-item" %>
                   </li>
                   <li>
                     <%= live_patch "Mover", to: Routes.page_path(@socket, :move_balance, balance.account), class: "dropdown-item" %>

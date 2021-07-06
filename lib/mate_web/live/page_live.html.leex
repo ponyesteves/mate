@@ -21,7 +21,8 @@
     id: @account_id,
     title: @page_title,
     action: @live_action,
-    balances: @balances,
+    balances: @balances_to_adjust,
+    type: @balances_to_adjust_type,
     return_to: Routes.page_path(@socket, :index) %>
 <% end %>
 

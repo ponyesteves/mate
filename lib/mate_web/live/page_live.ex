@@ -25,7 +25,7 @@ defmodule MateWeb.PageLive do
         end_date: Timex.end_of_month(Date.utc_today())
       })
 
-    {:ok, assign(socket, balances: balances, savings: savings, expenses: expenses)}
+    {:ok, assign(socket, balances: balances, savings: savings, expenses: expenses, balances_to_adjust: [], balances_to_adjust_type: "")}
   end
 
   @impl true
@@ -70,11 +70,19 @@ defmodule MateWeb.PageLive do
     |> assign(:account_id, account_id)
   end
 
-  defp apply_action(socket, :adjust_balance, %{"id" => account_id}) do
+  defp apply_action(socket, :adjust_balance, %{"id" => account_id, "type" => type}) do
+    balances_to_adjust = case type do
+      "availables" -> socket.assigns.balances
+      "savings" -> socket.assigns.savings
+      _ -> socket.assigns.expenses
+    end
+
     socket
     |> assign(:page_title, "Ajustar Balance")
     |> assign(:form_component, MateWeb.EntryLive.AdjustBalanceComponent)
     |> assign(:account_id, account_id)
+    |> assign(:balances_to_adjust, balances_to_adjust)
+    |> assign(:balances_to_adjust_type, type)
   end
 
   defp apply_action(socket, :tag_account, %{"id" => account_id, "tag_name" => tag_name}) do
