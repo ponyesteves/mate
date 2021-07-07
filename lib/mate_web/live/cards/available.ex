@@ -15,7 +15,7 @@ defmodule MateWeb.AvailableCard do
       <div class="card-body">
         <ul class="list-group">
           <%= for balance <- @balances do %>
-            <li class="list-group__item text-secondary">
+            <li id="<%= balance.account.id %>" class="list-group__item text-secondary" phx-hook="Drop">
             <div class="row">
               <div class="col-4">
                 <%= balance.account.name %>

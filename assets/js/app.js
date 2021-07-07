@@ -22,7 +22,57 @@ import { LiveSocket } from 'phoenix_live_view'
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
   .getAttribute('content')
+
+function handleDragStart(_e) {
+  this.style.opacity = '0.4'
+}
+
+function handleDragEnd(_e) {
+  this.style.opacity = '1'
+}
+
+const Hooks = {
+  Drop: {
+    mounted() {
+      /* events fired on the drop targets */
+      this.el.addEventListener(
+        'dragover',
+        function (e) {
+          // prevent default to allow drop
+          e.currentTarget.style.transform = 'scale(1.05)'
+          // e.preventDefault()
+        },
+        false
+      )
+
+      this.el.addEventListener(
+        'dragenter',
+        function (e) {
+          // highlight potential drop target when the draggable element enters it
+          // e.currentTarget.style.border = '5px dotted grey'
+        },
+        false
+      )
+      this.el.addEventListener(
+        'dragleave',
+        function (e) {
+          // reset background of potential drop target when the draggable element leaves it
+          e.currentTarget.style.transform = 'scale(1)'
+        },
+        false
+      )
+    },
+  },
+  Drag: {
+    mounted() {
+      this.el.draggable = true
+      this.el.addEventListener('dragstart', handleDragStart)
+      this.el.addEventListener('dragend', handleDragEnd)
+    },
+  },
+}
 let liveSocket = new LiveSocket('/live', Socket, {
+  hooks: Hooks,
   params: { _csrf_token: csrfToken },
   dom: {
     onBeforeElUpdated(from, to) {
