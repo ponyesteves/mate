@@ -3,7 +3,7 @@ defmodule MateWeb.PageLive do
   use MateWeb, :live_view
   alias Mate.Conty
 
-  alias Mate.Transactions.{EntryGroup, OutcomeEntryGroup}
+  alias Mate.Transactions.EntryGroup
 
   alias Mate.Taggable
 
@@ -25,7 +25,12 @@ defmodule MateWeb.PageLive do
         end_date: Timex.end_of_month(Date.utc_today())
       })
 
-    {:ok, assign(socket, balances: balances, savings: savings, expenses: expenses, balances_to_adjust: [], balances_to_adjust_type: "")}
+    {:ok,
+     assign(socket,
+       balances: balances,
+       savings: savings,
+       expenses: expenses
+     )}
   end
 
   @impl true
@@ -52,15 +57,25 @@ defmodule MateWeb.PageLive do
   end
 
   defp apply_action(socket, :new, _params) do
+    debit_accounts = Conty.accounts_by_type(:assets) |> to_select
+    credit_accounts = Conty.accounts_by_type(:income) |> to_select
+
     socket
-    |> assign(:page_title, "Nueva entrada")
+    |> assign(:page_title, "Disponible")
     |> assign(:entry_group, %EntryGroup{start_date: Date.utc_today()})
+    |> assign(debit_accounts: debit_accounts)
+    |> assign(credit_accounts: credit_accounts)
   end
 
   defp apply_action(socket, :new_outcome, _params) do
+    debit_accounts = Conty.accounts_by_type(:outcome) |> to_select
+    credit_accounts = Conty.accounts_by_type(:liabilities) |> to_select
+
     socket
-    |> assign(:page_title, "Gasto")
+    |> assign(:page_title, "Gastos")
     |> assign(:entry_group, %EntryGroup{start_date: Date.utc_today()})
+    |> assign(debit_accounts: debit_accounts)
+    |> assign(credit_accounts: credit_accounts)
   end
 
   defp apply_action(socket, :move_balance, %{"id" => account_id}) do
@@ -70,19 +85,19 @@ defmodule MateWeb.PageLive do
     |> assign(:account_id, account_id)
   end
 
-  defp apply_action(socket, :adjust_balance, %{"id" => account_id, "type" => type}) do
-    balances_to_adjust = case type do
-      "availables" -> socket.assigns.balances
-      "savings" -> socket.assigns.savings
-      _ -> socket.assigns.expenses
-    end
-
+  defp apply_action(socket, :adjust_balance, %{"account_debit_id" => account_debit_id, "account_credit_id" => account_credit_id, "card" => card}) do
+    card =
+      case card do
+        "availables" -> :balances
+        "savings" -> :savings
+        "expenses" -> :expenses
+      end
     socket
-    |> assign(:page_title, "Ajustar Balance")
+    |> assign(:page_title, "Saldo en cuenta")
     |> assign(:form_component, MateWeb.EntryLive.AdjustBalanceComponent)
-    |> assign(:account_id, account_id)
-    |> assign(:balances_to_adjust, balances_to_adjust)
-    |> assign(:balances_to_adjust_type, type)
+    |> assign(:account_debit_id, account_debit_id)
+    |> assign(:account_credit_id, account_credit_id)
+    |> assign(:current_balances, socket.assigns[card])
   end
 
   defp apply_action(socket, :tag_account, %{"id" => account_id, "tag_name" => tag_name}) do

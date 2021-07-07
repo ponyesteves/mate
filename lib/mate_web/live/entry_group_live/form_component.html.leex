@@ -1,6 +1,6 @@
 <div class="card">
-  <div class="card__header--primary">
-    <div class="card__header-title">Entrada</div>
+  <div class="card__header--primary <%= @style %>">
+    <div class="card__header-title"><%= @title %></div>
   </div>
   <div class="card-body">
     <%= f = form_for @changeset, "#",

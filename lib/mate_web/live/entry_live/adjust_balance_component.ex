@@ -5,66 +5,50 @@ defmodule MateWeb.EntryLive.AdjustBalanceComponent do
   alias Mate.Conty
 
   @impl true
-  def update(assigns, socket) do
-    {:ok,
-     socket
-     |> assign(assigns)}
-  end
+  def handle_event(
+        "save",
+        %{"adjust_balance" => %{"amount" => amount}},
+        %{
+          assigns: %{
+            account_debit_id: account_debit_id,
+            account_credit_id: account_credit_id,
+            current_balances: current_balances
+          }
+        } = socket
+      ) do
+    account_debit_id = String.to_integer(account_debit_id)
+    account_credit_id = String.to_integer(account_credit_id)
 
-  @impl true
-  def handle_event("save", %{"adjust_balance" => %{"amount" => amount}}, %{assigns: %{type: type}} = socket) do
-    adjust_account_id = socket.assigns.id |> String.to_integer()
-    type = type |> String.to_integer()
+    balance =
+      Enum.find(current_balances, fn
+        %{account: account, source: %Ecto.Association.NotLoaded{}} ->
+          account.id == account_debit_id
 
-    balance = Enum.find(socket.assigns.balances, fn balance ->
-      balance.account.id == adjust_account_id &&
-      balance.source.id == type
-    end)
-
-    balance_diff = Decimal.sub(amount, balance.amount)
-
-    entry_attrs = %{
-      date: Date.utc_today(),
-      type: "adjust",
-      account_credit_id: adjust_account_id,
-      account_debit_id: balance.source.id,
-      entry_items: [
-        %{account_id: adjust_account_id, source_id: balance.source.id, amount: balance_diff},
-        %{account_id: balance.source.id, source_id: adjust_account_id, amount: Decimal.negate(balance_diff)}
-      ]
-    }
-
-    Conty.change_entry(%Conty.Entry{}, entry_attrs)
-    |> Mate.Repo.insert()
-    |> IO.inspect(label: "hola")
-
-    {:noreply,
-     socket
-     |> put_flash(:info, "Balance ajustado")
-     |> push_redirect(to: socket.assigns.return_to)}
-  end
-
-  @impl true
-  def handle_event("save", %{"adjust_balance" => %{"amount" => amount}}, socket) do
-    adjust_account_id = socket.assigns.id |> String.to_integer()
-
-    balance = Enum.find(socket.assigns.balances, fn balance -> balance.account.id == adjust_account_id end)
+        %{account: account, source: source} ->
+          account.id == account_debit_id &&
+            source.id == account_credit_id
+      end)
 
     balance_diff = Decimal.sub(amount, balance.amount)
 
     entry_attrs = %{
       date: Date.utc_today(),
       type: "adjust",
-      account_credit_id: adjust_account_id,
-      account_debit_id: 2,
+      account_debit_id: account_debit_id,
+      account_credit_id: account_credit_id,
       entry_items: [
-        %{account_id: adjust_account_id, amount: balance_diff},
-        %{account_id: 2, amount: Decimal.negate(balance_diff)}
+        %{account_id: account_debit_id, source_id: account_credit_id, amount: balance_diff},
+        %{
+          account_id: account_credit_id,
+          source_id: account_debit_id,
+          amount: Decimal.negate(balance_diff)
+        }
       ]
     }
 
     Conty.change_entry(%Conty.Entry{}, entry_attrs)
     |> Mate.Repo.insert()
+    |> IO.inspect(label: "label")
 
     {:noreply,
      socket

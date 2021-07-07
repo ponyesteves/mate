@@ -21,7 +21,7 @@ defmodule MateWeb.Router do
     live "/", PageLive, :index
     live "/new", PageLive, :new
     live "/new_outcome", PageLive, :new_outcome
-    live "/:id/adjust_balance/:type", PageLive, :adjust_balance
+    live "/:account_debit_id/adjust_balance/:account_credit_id/:card", PageLive, :adjust_balance
     live "/:id/move_balance", PageLive, :move_balance
     live "/:id/tag_account/:tag_name", PageLive, :tag_account
     live "/:id/untag_account/:tag_name", PageLive, :untag_account

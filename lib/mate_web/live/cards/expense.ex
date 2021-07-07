@@ -26,10 +26,7 @@ defmodule MateWeb.ExpenseCard do
               <div class="col-4 d-flex justify-content-end align-items-center">
                 <%= live_component @socket, MateWeb.DropdownComponent, %{id: "expense_#{balance.account.id}_#{balance.source.id}"} do %>
                   <li>
-                    <%= live_patch "Corregir", to: Routes.page_path(@socket, :adjust_balance, balance.account, balance.source), class: "dropdown-item" %>
-                  </li>
-                  <li>
-                    <%= live_patch "Mover", to: Routes.page_path(@socket, :move_balance, balance.account), class: "dropdown-item" %>
+                    <%= live_patch "Corregir", to: Routes.page_path(@socket, :adjust_balance, balance.account, balance.source, "expenses"), class: "dropdown-item" %>
                   </li>
                 <% end %>
               </div>

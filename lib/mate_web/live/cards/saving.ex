@@ -7,10 +7,7 @@ defmodule MateWeb.SavingCard do
     ~L"""
     <div class="card">
       <div class="card__header--success">
-        <div class="card__header-title">Ahorros</div>
-        <%= live_patch to: Routes.page_path(@socket, :new), class: "btn btn-primary border-white" do %>
-          <i class="fa fa-plus"></i>
-        <% end %>
+        <div class="card__header-title"><%= @title %></div>
       </div>
       <div class="card-body">
         <ul class="list-group">
@@ -26,7 +23,7 @@ defmodule MateWeb.SavingCard do
               <div class="col-4 d-flex justify-content-end align-items-center">
                 <%= live_component @socket, MateWeb.DropdownComponent, %{id: "available_#{balance.account.id}"} do %>
                   <li>
-                    <%= live_patch "Corregir", to: Routes.page_path(@socket, :adjust_balance, balance.account, "savings"), class: "dropdown-item" %>
+                    <%= live_patch "Corregir", to: Routes.page_path(@socket, :adjust_balance, balance.account, 2, "savings"), class: "dropdown-item" %>
                   </li>
                   <li>
                     <%= live_patch "Mover", to: Routes.page_path(@socket, :move_balance, balance.account), class: "dropdown-item" %>

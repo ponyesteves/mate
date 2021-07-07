@@ -2,19 +2,8 @@ defmodule MateWeb.EntryGroupLive.FormComponent do
   @moduledoc false
   use MateWeb, :live_component
 
-  alias Mate.{Conty, Transactions}
+  alias Mate.Transactions
   alias Transactions.EntryGroup
-
-  @impl true
-  def mount(socket) do
-    debit_accounts = Conty.accounts_by_type(:assets) |> to_select
-    credit_accounts = Conty.accounts_by_type(:income) |> to_select
-
-    {:ok,
-     socket
-     |> assign(debit_accounts: debit_accounts)
-     |> assign(credit_accounts: credit_accounts)}
-  end
 
   @impl true
   def update(%{entry_group: entry_group} = assigns, socket) do
@@ -66,25 +55,12 @@ defmodule MateWeb.EntryGroupLive.FormComponent do
     end
   end
 
-  defp save_entry_group(socket, :edit, entry_group_params) do
-    case Transactions.update_entry_group(socket.assigns.entry_group, entry_group_params) do
-      {:ok, _entry_group} ->
-        {:noreply,
-         socket
-         |> put_flash(:info, "Entry group updated successfully")
-         |> push_redirect(to: socket.assigns.return_to)}
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, :changeset, changeset)}
-    end
-  end
-
-  defp save_entry_group(socket, :new, entry_group_params) do
+  defp save_entry_group(socket, action, entry_group_params) when action in ~w(new new_outcome)a do
     case Transactions.create_entry_group(entry_group_params) do
       {:ok, _entry_group} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Entry group created successfully")
+         |> put_flash(:info, "Registro creado")
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->

@@ -3,26 +3,42 @@
     id: @entry_group.id || :new,
     title: @page_title,
     action: @live_action,
+    style: 'bg-primary',
+    credit_accounts: @credit_accounts,
+    debit_accounts: @debit_accounts,
     entry_group: @entry_group,
     return_to: Routes.page_path(@socket, :index) %>
 <% end %>
 
 <%= if @live_action in [:new_outcome] do %>
-  <%= live_modal @socket, MateWeb.EntryGroupLive.OutcomeComponent,
+  <%= live_modal @socket, MateWeb.EntryGroupLive.FormComponent,
     id: @entry_group.id || :new,
     title: @page_title,
     action: @live_action,
+    style: 'bg-danger',
+    credit_accounts: @credit_accounts,
+    debit_accounts: @debit_accounts,
     entry_group: @entry_group,
     return_to: Routes.page_path(@socket, :index) %>
 <% end %>
 
-<%= if @live_action in [:move_balance, :adjust_balance] do %>
+<%= if @live_action in [:adjust_balance] do %>
   <%= live_modal @socket, @form_component,
-    id: @account_id,
+    id: @account_credit_id,
+    account_debit_id: @account_debit_id,
+    account_credit_id: @account_credit_id,
+    current_balances: @current_balances,
     title: @page_title,
     action: @live_action,
-    balances: @balances_to_adjust,
-    type: @balances_to_adjust_type,
+    return_to: Routes.page_path(@socket, :index) %>
+<% end %>
+
+<%= if @live_action in [:move_balance] do %>
+  <%= live_modal @socket, @form_component,
+    id: @account_credit_id,
+    title: @page_title,
+    action: @live_action,
+    card: @card,
     return_to: Routes.page_path(@socket, :index) %>
 <% end %>
 
@@ -30,18 +46,18 @@
   <div class="d-flex flex-column mt-3 w-50 mx-2">
     <div>
       <!-- Candidate for component -->
-      <%= live_component @socket, MateWeb.AvailableCard, balances: @balances %>
+      <%= live_component @socket, MateWeb.AvailableCard, title: "Disponible", balances: @balances %>
     </div>
 
     <div class="mt-4">
       <!-- Candidate for component -->
-      <%= live_component @socket, MateWeb.SavingCard, balances: @savings %>
+      <%= live_component @socket, MateWeb.SavingCard, title: "Ahorros", balances: @savings %>
     </div>
   </div>
   <div class="d-flex flex-column mt-3 w-50 mx-2">
     <div>
       <!-- Candidate for component -->
-      <%= live_component @socket, MateWeb.ExpenseCard, balances: @expenses %>
+      <%= live_component @socket, MateWeb.ExpenseCard, title: "Gastos", balances: @expenses %>
     </div>
   </div>
 </div>
