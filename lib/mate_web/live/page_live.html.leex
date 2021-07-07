@@ -35,10 +35,9 @@
 
 <%= if @live_action in [:move_balance] do %>
   <%= live_modal @socket, @form_component,
-    id: @account_credit_id,
+    id: @account_id,
     title: @page_title,
     action: @live_action,
-    card: @card,
     return_to: Routes.page_path(@socket, :index) %>
 <% end %>
 
