@@ -20,7 +20,7 @@ defmodule MateWeb.ViewHelpers do
     )
   end
 
-  @format_options [precision: 0, delimiter: ".", separator: ",", format: "%n"]
+  @format_options [precision: 0, delimiter: ".", separator: ",", format: "%n", negative_format: "(%n)"]
 
   def format_number(number, opts \\ @format_options)
 
@@ -31,7 +31,7 @@ defmodule MateWeb.ViewHelpers do
   end
 
   def format_number(number, opts) do
-    Number.Delimit.number_to_delimited(number, Keyword.merge(@format_options, opts))
+    Number.Currency.number_to_currency(number, Keyword.merge(@format_options, opts))
   end
 
   defp find_sup_string(sup) do
