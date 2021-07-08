@@ -58,9 +58,27 @@ defmodule MateWeb.AvailableCard do
 
   @impl true
   def handle_event("drop", params, socket) do
-    IO.inspect(params, label: "drop")
+    account_debit_id = params["account_debit_id"]
+    account_credit_id = params["account_credit_id"]
+    source_id = params["source_id"]
+    amount = String.to_integer(params["amount"])
 
-    {:noreply, socket}
+    entry_attrs = %{
+      date: Date.utc_today(),
+      type: "adjust",
+      account_debit_id: account_debit_id,
+      account_credit_id: account_credit_id,
+      entry_items: [
+        %{account_id: account_debit_id, source_id: source_id, amount: Decimal.negate(amount)},
+        %{account_id: account_credit_id, source_id: source_id, amount: amount}
+      ]
+    }
+
+    Mate.Conty.change_entry(%Mate.Conty.Entry{}, entry_attrs)
+    |> Mate.Repo.insert()
+
+    {:noreply,
+     socket
+     |> push_redirect(to: Routes.page_path(socket, :index))}
   end
 end
-

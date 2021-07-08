@@ -88,7 +88,7 @@ defmodule MateWeb.PageLive do
   defp apply_action(socket, :adjust_balance, %{"account_debit_id" => account_debit_id, "account_credit_id" => account_credit_id, "card" => card}) do
     card =
       case card do
-        "available" -> :balances
+        "availables" -> :balances
         "savings" -> :savings
         "expenses" -> :expenses
       end

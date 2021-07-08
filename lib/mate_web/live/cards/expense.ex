@@ -18,7 +18,11 @@ defmodule MateWeb.ExpenseCard do
             <li class="list-group__item text-secondary">
             <div id="expense<%= balance.account.id %>_<%= balance.source.id %>" class="row" phx-hook="Drag" data-account-id="<%= balance.account.id %>" data-source-id="<%= balance.source.id %>" data-amount="<%= balance.amount %>">
               <div class="col-4">
-                <%= balance.source.name %>
+                <%= if Decimal.compare(balance.amount, 0) == :lt do %>
+                  <%= balance.source.name %>
+                <% else %>
+                  <strike><%= balance.source.name %></strike>
+                <% end %>
               </div>
               <div class="col-4 d-flex justify-content-end align-items-center">
                 <%= format_number(balance.amount, sup: :ars) %>

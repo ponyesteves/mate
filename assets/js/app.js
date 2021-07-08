@@ -51,12 +51,15 @@ const Hooks = {
           e.preventDefault()
 
           // Get the data, which is the id of the drop target
-          const account_id = e.dataTransfer.getData('account_id')
+          //TODO: normalize variables on startdrag to fit 👇
+          const account_credit_id = e.currentTarget.getAttribute('id')
+          const account_debit_id = e.dataTransfer.getData('account_id')
           const source_id = e.dataTransfer.getData('source_id')
           const amount = e.dataTransfer.getData('amount')
 
           $this.pushEventTo('#available-card', 'drop', {
-            account_id,
+            account_credit_id,
+            account_debit_id,
             source_id,
             amount,
           })
