@@ -41,6 +41,15 @@ function handleDragEnd(_e) {
 }
 
 const Hooks = {
+  Odometer: {
+    mounted() {
+      this.el.classList.add('odometer')
+      const amount = this.el.dataset.amount
+      const $this = this
+
+      setTimeout(() => $this.el.style.setProperty('--num', amount))
+    },
+  },
   Drop: {
     mounted() {
       const $this = this

@@ -20,8 +20,8 @@ defmodule MateWeb.AvailableCard do
               <div class="col-4">
                 <%= balance.account.name %>
               </div>
-              <div class="col-4 d-flex justify-content-end align-items-center">
-                <%= format_number(balance.amount, sup: :ars) %>
+              <div id="amount_<%= @id %>" class="col-4 d-flex justify-content-end align-items-center" data-amount="<%= format_number(balance.amount) %>" phx-hook="Odometer">
+                <sup>Ars</sup>
               </div>
               <div class="col-4 d-flex justify-content-end align-items-center">
                 <%= live_component @socket, MateWeb.DropdownComponent, %{id: "available_#{balance.account.id}"} do %>

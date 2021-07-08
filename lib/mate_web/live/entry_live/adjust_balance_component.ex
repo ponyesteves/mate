@@ -48,7 +48,6 @@ defmodule MateWeb.EntryLive.AdjustBalanceComponent do
 
     Conty.change_entry(%Conty.Entry{}, entry_attrs)
     |> Mate.Repo.insert()
-    |> IO.inspect(label: "label")
 
     {:noreply,
      socket
