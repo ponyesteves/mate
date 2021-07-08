@@ -16,7 +16,7 @@ defmodule MateWeb.ExpenseCard do
         <ul class="list-group">
           <%= for balance <- @balances do %>
             <li class="list-group__item text-secondary">
-            <div id="expense<%= balance.account.id %>_<%= balance.source.id %>" class="row" phx-hook="Drag">
+            <div id="expense<%= balance.account.id %>_<%= balance.source.id %>" class="row" phx-hook="Drag" data-account-id="<%= balance.account.id %>" data-source-id="<%= balance.source.id %>" data-amount="<%= balance.amount %>">
               <div class="col-4">
                 <%= balance.source.name %>
               </div>

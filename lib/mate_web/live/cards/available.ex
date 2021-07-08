@@ -5,7 +5,7 @@ defmodule MateWeb.AvailableCard do
   @impl true
   def render(assigns) do
     ~L"""
-    <div class="card">
+    <div id="<%= @id %>" class="card">
       <div class="card__header--primary">
         <div class="card__header-title">Disponible</div>
         <%= live_patch to: Routes.page_path(@socket, :new), class: "btn btn-primary border-white" do %>
@@ -54,6 +54,13 @@ defmodule MateWeb.AvailableCard do
     </div>
 
     """
+  end
+
+  @impl true
+  def handle_event("drop", params, socket) do
+    IO.inspect(params, label: "drop")
+
+    {:noreply, socket}
   end
 end
 

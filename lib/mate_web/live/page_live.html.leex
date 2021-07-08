@@ -45,7 +45,7 @@
   <div class="d-flex flex-column mt-3 w-50 mx-2">
     <div>
       <!-- Candidate for component -->
-      <%= live_component @socket, MateWeb.AvailableCard, title: "Disponible", balances: @balances %>
+      <%= live_component @socket, MateWeb.AvailableCard, id: "available-card", title: "Disponible", balances: @balances %>
     </div>
 
     <div class="mt-4">
@@ -59,4 +59,4 @@
       <%= live_component @socket, MateWeb.ExpenseCard, title: "Gastos", balances: @expenses %>
     </div>
   </div>
-</div>
+</div

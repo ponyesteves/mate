@@ -23,7 +23,16 @@ let csrfToken = document
   .querySelector("meta[name='csrf-token']")
   .getAttribute('content')
 
-function handleDragStart(_e) {
+function handleDragStart(e) {
+  const account_id = e.currentTarget.dataset.accountId
+  const source_id = e.currentTarget.dataset.sourceId
+  const amount = e.currentTarget.dataset.amount
+
+  e.dataTransfer.setData('account_id', account_id)
+  e.dataTransfer.setData('source_id', source_id)
+  e.dataTransfer.setData('amount', amount)
+
+  // e.preventDefault()
   this.style.opacity = '0.4'
 }
 
@@ -34,6 +43,26 @@ function handleDragEnd(_e) {
 const Hooks = {
   Drop: {
     mounted() {
+      const $this = this
+
+      this.el.addEventListener(
+        'drop',
+        function (e) {
+          e.preventDefault()
+
+          // Get the data, which is the id of the drop target
+          const account_id = e.dataTransfer.getData('account_id')
+          const source_id = e.dataTransfer.getData('source_id')
+          const amount = e.dataTransfer.getData('amount')
+
+          $this.pushEventTo('#available-card', 'drop', {
+            account_id,
+            source_id,
+            amount,
+          })
+        },
+        false
+      )
       /* events fired on the drop targets */
       this.el.addEventListener(
         'dragover',
