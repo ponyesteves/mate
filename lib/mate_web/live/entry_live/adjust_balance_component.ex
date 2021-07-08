@@ -51,7 +51,6 @@ defmodule MateWeb.EntryLive.AdjustBalanceComponent do
 
     {:noreply,
      socket
-     |> put_flash(:info, "Balance ajustado")
      |> push_redirect(to: socket.assigns.return_to)}
   end
 end

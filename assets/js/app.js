@@ -40,14 +40,51 @@ function handleDragEnd(_e) {
   this.style.opacity = '1'
 }
 
+function numberAnimation({ el, number, steps = 15, time = 500 }) {
+  const diff = 1000
+  const from = Math.round(number - 1000)
+  const step = Math.round(diff / steps)
+  const step_time = Math.abs(time / steps)
+
+  _handleNumberAnimation(el, from, number, step, step_time, steps)
+}
+
+function _handleNumberAnimation(
+  el,
+  current,
+  target,
+  step,
+  step_time,
+  remaining_steps
+) {
+  if (remaining_steps > 0) {
+    console.log({ current, target, step, step_time, remaining_steps })
+    el.innerHTML = formatNumber(current)
+    return setTimeout(
+      _handleNumberAnimation.bind(
+        this,
+        el,
+        current + step,
+        target,
+        step,
+        step_time,
+        --remaining_steps
+      ),
+      step_time
+    )
+  }
+  el.innerHTML = formatNumber(target)
+}
+function formatNumber(number, _opts) {
+  return `${new Intl.NumberFormat('es').format(number)}<sup>Ars</ars>`
+}
+
 const Hooks = {
   Odometer: {
     mounted() {
-      this.el.classList.add('odometer')
-      const amount = this.el.dataset.amount
-      const $this = this
+      const amount = parseInt(this.el.dataset.amount)
 
-      setTimeout(() => $this.el.style.setProperty('--num', amount))
+      numberAnimation({ el: this.el, number: amount })
     },
   },
   Drop: {

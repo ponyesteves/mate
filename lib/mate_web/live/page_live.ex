@@ -106,7 +106,6 @@ defmodule MateWeb.PageLive do
     Taggable.tag(account, tag_name)
 
     socket
-    |> put_flash(:info, "Balance reasignado")
     |> push_redirect(to: Routes.page_path(socket, :index))
   end
 
@@ -116,7 +115,6 @@ defmodule MateWeb.PageLive do
     Taggable.untag(account, tag_name)
 
     socket
-    |> put_flash(:info, "Balance reasignado")
     |> push_redirect(to: Routes.page_path(socket, :index))
   end
 end

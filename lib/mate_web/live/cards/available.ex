@@ -20,7 +20,7 @@ defmodule MateWeb.AvailableCard do
               <div class="col-4">
                 <%= balance.account.name %>
               </div>
-              <div id="amount_<%= @id %>" class="col-4 d-flex justify-content-end align-items-center" data-amount="<%= format_number(balance.amount) %>" phx-hook="Odometer">
+              <div id="amount_<%= @id %>" class="col-4 d-flex justify-content-end align-items-center" data-amount="<%= balance.amount %>" phx-hook="Odometer">
                 <sup>Ars</sup>
               </div>
               <div class="col-4 d-flex justify-content-end align-items-center">

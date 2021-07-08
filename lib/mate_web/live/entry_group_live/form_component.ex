@@ -60,7 +60,6 @@ defmodule MateWeb.EntryGroupLive.FormComponent do
       {:ok, _entry_group} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Registro creado")
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->

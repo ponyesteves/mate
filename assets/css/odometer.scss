@@ -1,14 +1,14 @@
 @property --num {
-  syntax: '<string>';
+  syntax: '<integer>';
   initial-value: 0;
   inherits: false;
 }
 
 .odometer {
-  transition: --num 0.4s;
+  transition: --num 0.5s;
   counter-reset: num var(--num);
 }
 
 .odometer::before {
-  content: var(--num);
+  content: counter(num);
 }
