@@ -33,11 +33,12 @@
     return_to: Routes.page_path(@socket, :index) %>
 <% end %>
 
-<%= if @live_action in [:move_balance] do %>
+<%= if @live_action in [:move_balance, :pay] do %>
   <%= live_modal @socket, @form_component,
     id: @account_id,
     title: @page_title,
     action: @live_action,
+    accounts: @accounts,
     return_to: Routes.page_path(@socket, :index) %>
 <% end %>
 

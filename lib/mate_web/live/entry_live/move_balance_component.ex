@@ -5,16 +5,6 @@ defmodule MateWeb.EntryLive.MoveBalanceComponent do
   alias Mate.Conty
 
   @impl true
-  def update(assigns, socket) do
-    accounts = Conty.accounts_by_type(:assets, except: [assigns.id]) |> Enum.map(&{&1.name, &1.id})
-
-    {:ok,
-     socket
-     |> assign(assigns)
-     |> assign(accounts: accounts)}
-  end
-
-  @impl true
   def handle_event("save", %{"adjust_balance" => %{"amount" => amount, "target_account_id" => target_account_id}}, socket) do
     adjust_account_id = socket.assigns.id |> String.to_integer()
 

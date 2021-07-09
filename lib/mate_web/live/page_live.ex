@@ -103,6 +103,15 @@ defmodule MateWeb.PageLive do
     socket
     |> assign(:page_title, "Mover Balance")
     |> assign(:form_component, MateWeb.EntryLive.MoveBalanceComponent)
+    |> assign(:accounts, Conty.accounts_by_type(:assets, except: [account_id]) |> Enum.map(&{&1.name, &1.id}))
+    |> assign(:account_id, account_id)
+  end
+
+  defp apply_action(socket, :pay, %{"id" => account_id}) do
+    socket
+    |> assign(:page_title, "Mover Balance")
+    |> assign(:form_component, MateWeb.EntryLive.MoveBalanceComponent)
+    |> assign(:accounts, Conty.accounts_by_type(:assets) |> Enum.map(&{&1.name, &1.id}))
     |> assign(:account_id, account_id)
   end
 
