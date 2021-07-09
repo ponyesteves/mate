@@ -41,22 +41,16 @@
     return_to: Routes.page_path(@socket, :index) %>
 <% end %>
 
-<div class="d-flex justify-content-around">
-  <div class="d-flex flex-column mt-3 w-50 mx-2">
-    <div>
-      <!-- Candidate for component -->
-      <%= live_component @socket, MateWeb.AvailableCard, id: "available-card", title: "Disponible", balances: @balances %>
-    </div>
-
-    <div class="mt-4">
-      <!-- Candidate for component -->
-      <%= live_component @socket, MateWeb.SavingCard, title: "Ahorros", balances: @savings %>
-    </div>
+<div class="d-flex flex-wrap justify-content-between mt-3">
+  <div class="mt-4 col-md-5 col-12">
+    <%= live_component @socket, MateWeb.AvailableCard, id: "available-card", title: "Disponible", balances: @balances %>
   </div>
-  <div class="d-flex flex-column mt-3 w-50 mx-2">
-    <div>
-      <!-- Candidate for component -->
-      <%= live_component @socket, MateWeb.ExpenseCard, title: "Gastos", balances: @expenses %>
-    </div>
+
+  <div class="mt-4 col-md-5 col-12">
+    <%= live_component @socket, MateWeb.ExpenseCard, title: "Gastos", balances: @expenses %>
+  </div>
+
+  <div class="mt-4 col-md-5 col-12">
+    <%= live_component @socket, MateWeb.SavingCard, title: "Ahorros", balances: @savings %>
   </div>
 </div
