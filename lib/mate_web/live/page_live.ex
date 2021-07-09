@@ -39,7 +39,6 @@ defmodule MateWeb.PageLive do
   end
 
   defp apply_action(socket, :index, _params) do
-    MateWeb.Endpoint.broadcast_from(self(), @topic, "refresh", socket.assigns)
 
     {:ok, assets_balances} =
       Conty.balances_filtered_by_account_type(:assets, %{end_date: Date.utc_today()})
@@ -53,11 +52,15 @@ defmodule MateWeb.PageLive do
         end_date: Timex.end_of_month(Date.utc_today())
       })
 
-    assign(socket,
+    socket = assign(socket,
       balances: append_prev_value_to_balance(socket.assigns.balances, balances),
       savings: savings,
       expenses: expenses
     )
+
+    MateWeb.Endpoint.broadcast_from(self(), @topic, "refresh", socket.assigns)
+
+    socket
   end
 
   defp append_prev_value_to_balance([], new_balances), do: new_balances
