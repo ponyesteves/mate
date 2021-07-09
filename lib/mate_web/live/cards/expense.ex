@@ -33,7 +33,7 @@ defmodule MateWeb.ExpenseCard do
                     <%= live_patch "Corregir", to: Routes.page_path(@socket, :adjust_balance, balance.account, balance.source, "expenses"), class: "dropdown-item" %>
                   </li>
                   <li>
-                      <%= live_patch "Pagar", to: Routes.page_path(@socket, :pay, balance.account), class: "dropdown-item" %>
+                      <%= live_patch "Pagar", to: Routes.page_path(@socket, :pay, balance.account, balance.source), class: "dropdown-item" %>
                   </li>
                 <% end %>
               </div>

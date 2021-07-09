@@ -12,7 +12,7 @@
         <div class="mb-3 col-md-4">
           <div class="input-group">
             <%= tlabel f, :amount, class: "input-group-text" %>
-            <%= number_input f, :amount, step: "any", class: "form-control" %>
+            <%= number_input f, :amount, step: "any", class: "form-control", value: @amount %>
             <%= error_tag f, :amount %>
           </div>
         </div>

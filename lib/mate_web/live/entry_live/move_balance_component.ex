@@ -14,8 +14,8 @@ defmodule MateWeb.EntryLive.MoveBalanceComponent do
       account_credit_id: target_account_id,
       account_debit_id: adjust_account_id,
       entry_items: [
-        %{account_id: target_account_id, amount: amount},
-        %{account_id: adjust_account_id, amount: Decimal.negate(amount)}
+        %{account_id: target_account_id, source_id: adjust_account_id, amount: amount},
+        %{account_id: adjust_account_id, source_id: socket.assigns.source_id, amount: Decimal.negate(amount)}
       ]
     }
 

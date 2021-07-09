@@ -29,6 +29,7 @@
     account_credit_id: @account_credit_id,
     current_balances: @current_balances,
     title: @page_title,
+    amount: @amount,
     action: @live_action,
     return_to: Routes.page_path(@socket, :index) %>
 <% end %>
@@ -36,7 +37,9 @@
 <%= if @live_action in [:move_balance, :pay] do %>
   <%= live_modal @socket, @form_component,
     id: @account_id,
+    source_id: @source_id,
     title: @page_title,
+    amount: @amount,
     action: @live_action,
     accounts: @accounts,
     return_to: Routes.page_path(@socket, :index) %>
