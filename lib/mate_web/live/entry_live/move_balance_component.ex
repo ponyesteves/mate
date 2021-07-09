@@ -34,6 +34,6 @@ defmodule MateWeb.EntryLive.MoveBalanceComponent do
 
     {:noreply,
      socket
-     |> push_redirect(to: socket.assigns.return_to)}
+     |> push_patch(to: socket.assigns.return_to)}
   end
 end

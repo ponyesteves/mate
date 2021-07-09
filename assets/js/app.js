@@ -4,7 +4,9 @@
 import '../css/app.scss'
 import 'alpinejs'
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min'
+import * as Bezier from 'bezier-easing'
 
+//
 // webpack automatically bundles all modules in your
 // entry points. Those entry points can be configured
 // in "webpack.config.js".
@@ -40,51 +42,99 @@ function handleDragEnd(_e) {
   this.style.opacity = '1'
 }
 
-function numberAnimation({ el, number, steps = 15, time = 500 }) {
-  const diff = 1000
-  const from = Math.round(number - 1000)
-  const step = Math.round(diff / steps)
-  const step_time = Math.abs(time / steps)
+const bezier = Bezier(0, 0, 0.58, 1)
 
-  _handleNumberAnimation(el, from, number, step, step_time, steps)
+function bezier_steps(steps, number) {
+  const container = Array.from(new Array(steps))
+  const bezier_step = Math.round((1 / steps) * 100) / 100
+
+  return container.map((_x, i) => {
+    if (steps === ++i) return 1
+
+    return bezier(i * bezier_step)
+  })
 }
 
-function _handleNumberAnimation(
+function numberAnimation({
   el,
-  current,
-  target,
-  step,
-  step_time,
-  remaining_steps
-) {
-  if (remaining_steps > 0) {
-    console.log({ current, target, step, step_time, remaining_steps })
-    el.innerHTML = formatNumber(current)
+  from = 0,
+  number,
+  total_steps = 5,
+  time = 1500,
+}) {
+  const diff = number - from
+  const step_time = Math.abs(time / total_steps)
+  const steps = bezier_steps(total_steps, diff)
+
+  _handleNumberAnimation(el, from, number, diff, step_time, steps)
+}
+
+function _handleNumberAnimation(el, from, number, diff, step_time, steps) {
+  if (steps.length > 0) {
+    const step = steps.shift()
+    const current = step * diff + from
+
+    setAmount(el, current, number > from ? 'up' : 'down')
+
     return setTimeout(
       _handleNumberAnimation.bind(
         this,
         el,
-        current + step,
-        target,
-        step,
+        from,
+        number,
+        diff,
         step_time,
-        --remaining_steps
+        steps
       ),
-      step_time
+      step_time * Math.pow(step, 10)
     )
   }
-  el.innerHTML = formatNumber(target)
+
+  setAmount(el, number)
 }
+
 function formatNumber(number, _opts) {
+  number = Math.round(number)
+  console.log(number)
   return `${new Intl.NumberFormat('es').format(number)}<sup>Ars</ars>`
+}
+
+function setAmount(el, amount, direction) {
+  el.innerHTML = formatNumber(amount)
+  el.style.color = backgroundColor(direction)
+}
+
+function amount(el) {
+  return parseInt(el.dataset.amount)
+}
+
+function prevAmount(el) {
+  return parseInt(el.dataset.prevAmount)
+}
+
+function backgroundColor(direction) {
+  if (direction === 'up') return 'green'
+  if (direction === 'down') return 'red'
+  return ''
 }
 
 const Hooks = {
   Odometer: {
     mounted() {
-      const amount = parseInt(this.el.dataset.amount)
+      setAmount(this.el, amount(this.el))
+    },
+    updated() {
+      const prevAmountValue = prevAmount(this.el)
+      const amountValue = amount(this.el)
 
-      numberAnimation({ el: this.el, number: amount })
+      if (prevAmountValue === amountValue)
+        return setAmount(this.el, amountValue)
+
+      numberAnimation({
+        el: this.el,
+        from: prevAmountValue,
+        number: amountValue,
+      })
     },
   },
   Drop: {

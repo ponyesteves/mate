@@ -8,6 +8,7 @@ defmodule Mate.Conty.Balance do
 
   embedded_schema do
     field :amount, :decimal
+    field :prev_amount, :decimal, default: 0
 
     belongs_to :account, Account
     belongs_to :source, Account
