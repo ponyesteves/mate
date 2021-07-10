@@ -1,4 +1,4 @@
-<div class="card col-md-4 offset-md-4">
+<div class="card">
   <div class="card__header--primary <%= @class_name %>">
     <div class="card__header-title"><%= @title %></div>
   </div>
@@ -12,13 +12,13 @@
         <div class="mb-3 col-12">
           <div class="input-group">
             <%= tlabel f, :amount, class: "input-group-text" %>
-            <%= number_input f, :amount, step: "any", class: "form-control", value: @amount %>
+            <%= number_input f, :amount, step: "any", class: "form-control", value: @amount, phx_hook: "Focus" %>
             <%= error_tag f, :amount %>
           </div>
         </div>
         <div class="mb-3 col-12">
           <div class="input-group">
-            <%= tlabel f, :account_credit, class: "input-group-text" %>
+            <%= label f, "Destino", class: "input-group-text" %>
             <%= select f, :target_account_id, @accounts, class: "form-select" %>
             <%= error_tag f, :target_account_id %>
           </div>

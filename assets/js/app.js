@@ -198,6 +198,11 @@ const Hooks = {
       this.el.addEventListener('dragend', handleDragEnd)
     },
   },
+  Focus: {
+    mounted() {
+      this.el.focus()
+    },
+  },
 }
 let liveSocket = new LiveSocket('/live', Socket, {
   hooks: Hooks,
