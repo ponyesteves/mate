@@ -10,6 +10,9 @@ defmodule MateWeb.EntryLive.MoveBalanceComponent do
         %{"adjust_balance" => %{"amount" => amount, "target_account_id" => target_account_id}},
         socket
       ) do
+
+    amount = socket.assigns.card == :expenses && Decimal.negate(amount) || amount
+
     adjust_account_id = socket.assigns.id |> String.to_integer()
 
     entry_attrs = %{

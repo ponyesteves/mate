@@ -19,6 +19,8 @@ defmodule MateWeb.EntryLive.AdjustBalanceComponent do
     account_debit_id = String.to_integer(account_debit_id)
     account_credit_id = String.to_integer(account_credit_id)
 
+    amount = socket.assigns.card == :expenses && Decimal.negate(amount) || amount
+
     balance =
       Enum.find(current_balances, fn
         %{account: account, source: %Ecto.Association.NotLoaded{}} ->

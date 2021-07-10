@@ -105,25 +105,11 @@ defmodule MateWeb.PageLive do
     )
     |> assign(:account_id, account_id)
     |> assign(:source_id, nil)
+    |> assign(:card, nil)
     |> assign(:amount, 0)
     |> assign(:class_name, "bg-primary")
   end
 
-  defp balance_to_pay(socket, account_id, source_id) do
-    account_id = String.to_integer(account_id)
-    source_id = String.to_integer(source_id)
-
-    Enum.find(expenses, &(&1.account.id == account_id && &1.source.id == source_id))
-  end
-
-  defp expenses do
-    {:ok, expenses} =
-      Conty.balances_with_source_filtered_by_account_type(:liabilities, %{
-        end_date: Timex.end_of_month(Date.utc_today())
-      })
-
-    expenses
-  end
 
   defp apply_action(socket, :pay, %{"id" => account_id, "source_id" => source_id}) do
     socket
@@ -132,7 +118,7 @@ defmodule MateWeb.PageLive do
     |> assign(:accounts, Conty.accounts_by_type(:assets) |> Enum.map(&{&1.name, &1.id}))
     |> assign(:account_id, account_id)
     |> assign(:source_id, source_id)
-    |> assign(:amount, balance_to_pay(socket, account_id, source_id).amount)
+    |> assign(:amount, amount_to_pay(account_id, source_id))
     |> assign(:card, :expenses)
     |> assign(:class_name, "bg-danger")
   end
@@ -155,6 +141,7 @@ defmodule MateWeb.PageLive do
     |> assign(:account_debit_id, account_debit_id)
     |> assign(:account_credit_id, account_credit_id)
     |> assign(:current_balances, socket.assigns[card])
+    |> assign(:card, card)
   end
 
   defp apply_action(socket, :tag_account, %{"id" => account_id, "tag_name" => tag_name}) do
@@ -173,5 +160,23 @@ defmodule MateWeb.PageLive do
 
     socket
     |> push_redirect(to: Routes.page_path(socket, :index))
+  end
+
+  defp amount_to_pay(account_id, source_id) do
+    account_id = String.to_integer(account_id)
+    source_id = String.to_integer(source_id)
+
+    Enum.find(expenses(), &(&1.account.id == account_id && &1.source.id == source_id))
+    |> Map.get(:amount)
+    |> Decimal.negate
+  end
+
+  defp expenses do
+    {:ok, expenses} =
+      Conty.balances_with_source_filtered_by_account_type(:liabilities, %{
+        end_date: Timex.end_of_month(Date.utc_today())
+      })
+
+    expenses
   end
 end
