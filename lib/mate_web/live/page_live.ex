@@ -106,6 +106,7 @@ defmodule MateWeb.PageLive do
     |> assign(:account_id, account_id)
     |> assign(:source_id, nil)
     |> assign(:amount, 0)
+    |> assign(:class_name, "bg-primary")
   end
 
   defp balance_to_pay(socket, account_id, source_id) do
@@ -126,13 +127,14 @@ defmodule MateWeb.PageLive do
 
   defp apply_action(socket, :pay, %{"id" => account_id, "source_id" => source_id}) do
     socket
-    |> assign(:page_title, "Mover Balance")
+    |> assign(:page_title, "Pagar")
     |> assign(:form_component, MateWeb.EntryLive.MoveBalanceComponent)
     |> assign(:accounts, Conty.accounts_by_type(:assets) |> Enum.map(&{&1.name, &1.id}))
     |> assign(:account_id, account_id)
     |> assign(:source_id, source_id)
     |> assign(:amount, balance_to_pay(socket, account_id, source_id).amount)
     |> assign(:card, :expenses)
+    |> assign(:class_name, "bg-danger")
   end
 
   defp apply_action(socket, :adjust_balance, %{

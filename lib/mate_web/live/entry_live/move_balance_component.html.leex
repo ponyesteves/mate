@@ -1,6 +1,6 @@
-<div class="card">
-  <div class="card__header--primary">
-    <div class="card__header-title">Mover</div>
+<div class="card col-md-4 offset-md-4">
+  <div class="card__header--primary <%= @class_name %>">
+    <div class="card__header-title"><%= @title %></div>
   </div>
   <div class="card-body">
     <%= f = form_for :adjust_balance, "#",
@@ -9,21 +9,21 @@
       phx_submit: "save" %>
 
       <div class="row">
-        <div class="mb-3 col-md-4">
+        <div class="mb-3 col-12">
           <div class="input-group">
             <%= tlabel f, :amount, class: "input-group-text" %>
             <%= number_input f, :amount, step: "any", class: "form-control", value: @amount %>
             <%= error_tag f, :amount %>
           </div>
         </div>
-        <div class="mb-3 col-md-4">
+        <div class="mb-3 col-12">
           <div class="input-group">
             <%= tlabel f, :account_credit, class: "input-group-text" %>
             <%= select f, :target_account_id, @accounts, class: "form-select" %>
             <%= error_tag f, :target_account_id %>
           </div>
         </div>
-        <div class="col-md-4 d-flex align-items-baseline">
+        <div class="col-12 d-flex align-items-baseline">
           <%= live_patch "Cancelar", to: @return_to, class: "d-block text-secondary me-3" %>
           <%= submit "Guardar", phx_disable_with: "Saving...", class: "btn btn-primary" %>
         </div>
