@@ -17,7 +17,8 @@ defmodule MateWeb.PageLive do
      assign(socket,
        balances: [],
        savings: [],
-       expenses: []
+       expenses: expenses,
+       amount: 0
      )}
   end
 
@@ -39,7 +40,6 @@ defmodule MateWeb.PageLive do
   end
 
   defp apply_action(socket, :index, _params) do
-
     {:ok, assets_balances} =
       Conty.balances_filtered_by_account_type(:assets, %{end_date: Date.utc_today()})
 
@@ -47,16 +47,12 @@ defmodule MateWeb.PageLive do
 
     savings = Taggable.filter(assets_balances, :savings)
 
-    {:ok, expenses} =
-      Conty.balances_with_source_filtered_by_account_type(:liabilities, %{
-        end_date: Timex.end_of_month(Date.utc_today())
-      })
-
-    socket = assign(socket,
-      balances: append_prev_value_to_balance(socket.assigns.balances, balances),
-      savings: savings,
-      expenses: expenses
-    )
+    socket =
+      assign(socket,
+        balances: append_prev_value_to_balance(socket.assigns.balances, balances),
+        savings: savings,
+        expenses: expenses
+      )
 
     MateWeb.Endpoint.broadcast_from(self(), @topic, "refresh", socket.assigns)
 
@@ -103,10 +99,29 @@ defmodule MateWeb.PageLive do
     socket
     |> assign(:page_title, "Mover Balance")
     |> assign(:form_component, MateWeb.EntryLive.MoveBalanceComponent)
-    |> assign(:accounts, Conty.accounts_by_type(:assets, except: [account_id]) |> Enum.map(&{&1.name, &1.id}))
+    |> assign(
+      :accounts,
+      Conty.accounts_by_type(:assets, except: [account_id]) |> Enum.map(&{&1.name, &1.id})
+    )
     |> assign(:account_id, account_id)
     |> assign(:source_id, nil)
     |> assign(:amount, 0)
+  end
+
+  defp balance_to_pay(socket, account_id, source_id) do
+    account_id = String.to_integer(account_id)
+    source_id = String.to_integer(source_id)
+
+    Enum.find(expenses, &(&1.account.id == account_id && &1.source.id == source_id))
+  end
+
+  defp expenses do
+    {:ok, expenses} =
+      Conty.balances_with_source_filtered_by_account_type(:liabilities, %{
+        end_date: Timex.end_of_month(Date.utc_today())
+      })
+
+    expenses
   end
 
   defp apply_action(socket, :pay, %{"id" => account_id, "source_id" => source_id}) do
@@ -116,7 +131,8 @@ defmodule MateWeb.PageLive do
     |> assign(:accounts, Conty.accounts_by_type(:assets) |> Enum.map(&{&1.name, &1.id}))
     |> assign(:account_id, account_id)
     |> assign(:source_id, source_id)
-    |> assign(:amount, 0)
+    |> assign(:amount, balance_to_pay(socket, account_id, source_id).amount)
+    |> assign(:card, :expenses)
   end
 
   defp apply_action(socket, :adjust_balance, %{

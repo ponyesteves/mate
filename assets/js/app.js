@@ -59,8 +59,8 @@ function numberAnimation({
   el,
   from = 0,
   number,
-  total_steps = 5,
-  time = 1500,
+  total_steps = 50,
+  time = 2500,
 }) {
   const diff = number - from
   const step_time = Math.abs(time / total_steps)
@@ -95,7 +95,7 @@ function _handleNumberAnimation(el, from, number, diff, step_time, steps) {
 
 function formatNumber(number, _opts) {
   number = Math.round(number)
-  console.log(number)
+
   return `${new Intl.NumberFormat('es').format(number)}<sup>Ars</ars>`
 }
 
