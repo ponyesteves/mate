@@ -44,6 +44,19 @@ function handleDragEnd(_e) {
 
 const bezier = Bezier(0, 0, 0.58, 1)
 
+function cuadratic(a, b, c, x) {
+  return a * Math.pow(x, 2) + b * x + c
+}
+
+function cuadratic_steps(steps, base) {
+  const container = Array.from(new Array(steps))
+  const step = Math.round((1 / steps) * 100) / 100
+
+  return container.map((_x, i) => {
+    return cuadratic(-0.5, 0.5, 0, step * ++i) + base
+  })
+}
+
 function bezier_steps(steps, number) {
   const container = Array.from(new Array(steps))
   const bezier_step = Math.round((1 / steps) * 100) / 100
@@ -65,16 +78,27 @@ function numberAnimation({
   const diff = number - from
   const step_time = Math.abs(time / total_steps)
   const steps = bezier_steps(total_steps, diff)
-
-  _handleNumberAnimation(el, from, number, diff, step_time, steps)
+  const scale_steps = cuadratic_steps(total_steps, 1)
+  console.log(scale_steps)
+  _handleNumberAnimation(el, from, number, diff, step_time, steps, scale_steps)
 }
 
-function _handleNumberAnimation(el, from, number, diff, step_time, steps) {
+function _handleNumberAnimation(
+  el,
+  from,
+  number,
+  diff,
+  step_time,
+  steps,
+  cuadratic_steps
+) {
+  const current_scale = cuadratic_steps.pop()
+
   if (steps.length > 0) {
     const step = steps.shift()
     const current = step * diff + from
 
-    setAmount(el, current, number > from ? 'up' : 'down')
+    setAmount(el, current, number > from ? 'up' : 'down', current_scale)
 
     return setTimeout(
       _handleNumberAnimation.bind(
@@ -84,13 +108,14 @@ function _handleNumberAnimation(el, from, number, diff, step_time, steps) {
         number,
         diff,
         step_time,
-        steps
+        steps,
+        cuadratic_steps
       ),
       step_time * Math.pow(step, 10)
     )
   }
 
-  setAmount(el, number)
+  setAmount(el, number, 'keep', current_scale)
 }
 
 function formatNumber(number, _opts) {
@@ -99,9 +124,10 @@ function formatNumber(number, _opts) {
   return `${new Intl.NumberFormat('es').format(number)}<sup>Ars</ars>`
 }
 
-function setAmount(el, amount, direction) {
+function setAmount(el, amount, direction, scale) {
   el.innerHTML = formatNumber(amount)
   el.style.color = backgroundColor(direction)
+  el.style.transform = `scale(${scale})`
 }
 
 function amount(el) {
