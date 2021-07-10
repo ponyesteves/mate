@@ -92,7 +92,7 @@ defmodule Mate.Conty do
       {:ok,
        Repo.all(query)
        |> Enum.map(fn {account, source, amount} ->
-         %Balance{id: account.id, account: account, source: source, amount: amount}
+         %Balance{id: "#{account.id}_#{source.id}", account: account, source: source, amount: amount}
        end)}
     end
   end

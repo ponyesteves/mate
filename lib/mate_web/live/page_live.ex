@@ -17,9 +17,14 @@ defmodule MateWeb.PageLive do
      assign(socket,
        balances: [],
        savings: [],
-       expenses: expenses,
+       expenses: [],
        amount: 0
      )}
+  end
+
+  @impl true
+  def handle_params(params, _url, socket) do
+    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
   @impl true
@@ -34,11 +39,6 @@ defmodule MateWeb.PageLive do
     {:noreply, assign(socket, balances: balances, savings: savings, expenses: expenses)}
   end
 
-  @impl true
-  def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
-  end
-
   defp apply_action(socket, :index, _params) do
     {:ok, assets_balances} =
       Conty.balances_filtered_by_account_type(:assets, %{end_date: Date.utc_today()})
@@ -47,30 +47,21 @@ defmodule MateWeb.PageLive do
 
     savings = Taggable.filter(assets_balances, :savings)
 
+    {:ok, expenses} =
+      Conty.balances_with_source_filtered_by_account_type(:liabilities, %{
+        end_date: Timex.end_of_month(Date.utc_today())
+      })
+
     socket =
       assign(socket,
         balances: append_prev_value_to_balance(socket.assigns.balances, balances),
-        savings: savings,
-        expenses: expenses
+        savings: append_prev_value_to_balance(socket.assigns.savings, savings),
+        expenses: append_prev_value_to_balance(socket.assigns.expenses, expenses)
       )
 
     MateWeb.Endpoint.broadcast_from(self(), @topic, "refresh", socket.assigns)
 
     socket
-  end
-
-  defp append_prev_value_to_balance([], new_balances), do: new_balances
-
-  defp append_prev_value_to_balance(prev_balances, new_balances) do
-    for balance <- new_balances do
-      prev_balance = Enum.find(prev_balances, &(&1.id == balance.id))
-
-      if is_nil(prev_balance) do
-        balance
-      else
-        %{balance | prev_amount: prev_balance.amount}
-      end
-    end
   end
 
   defp apply_action(socket, :new, _params) do
@@ -101,7 +92,7 @@ defmodule MateWeb.PageLive do
     |> assign(:form_component, MateWeb.EntryLive.MoveBalanceComponent)
     |> assign(
       :accounts,
-      Conty.accounts_by_type(:assets, except: [account_id]) |> Enum.map(&{&1.name, &1.id})
+      Conty.accounts_by_type(:assets, except: [account_id]) |> to_select
     )
     |> assign(:account_id, account_id)
     |> assign(:source_id, nil)
@@ -110,16 +101,15 @@ defmodule MateWeb.PageLive do
     |> assign(:class_name, "bg-primary")
   end
 
-
   defp apply_action(socket, :pay, %{"id" => account_id, "source_id" => source_id}) do
     socket
     |> assign(:page_title, "Pagar")
     |> assign(:form_component, MateWeb.EntryLive.MoveBalanceComponent)
-    |> assign(:accounts, Conty.accounts_by_type(:assets) |> Enum.map(&{&1.name, &1.id}))
+    |> assign(:accounts, Conty.accounts_by_type(:assets) |> to_select)
     |> assign(:account_id, account_id)
     |> assign(:source_id, source_id)
-    |> assign(:amount, amount_to_pay(account_id, source_id))
     |> assign(:card, :expenses)
+    |> assign(:amount, amount_to_pay(account_id, source_id))
     |> assign(:class_name, "bg-danger")
   end
 
@@ -162,13 +152,29 @@ defmodule MateWeb.PageLive do
     |> push_redirect(to: Routes.page_path(socket, :index))
   end
 
+  defp append_prev_value_to_balance([], new_balances) do
+    Enum.map(new_balances, &%{&1 | prev_amount: &1.amount})
+  end
+
+  defp append_prev_value_to_balance(prev_balances, new_balances) do
+    for balance <- new_balances do
+      prev_balance = Enum.find(prev_balances, &(&1.id == balance.id))
+
+      if is_nil(prev_balance) do
+        balance
+      else
+        %{balance | prev_amount: prev_balance.amount}
+      end
+    end
+  end
+
   defp amount_to_pay(account_id, source_id) do
     account_id = String.to_integer(account_id)
     source_id = String.to_integer(source_id)
 
     Enum.find(expenses(), &(&1.account.id == account_id && &1.source.id == source_id))
     |> Map.get(:amount)
-    |> Decimal.negate
+    |> Decimal.negate()
   end
 
   defp expenses do

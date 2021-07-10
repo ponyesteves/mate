@@ -19,7 +19,7 @@ defmodule MateWeb.EntryLive.AdjustBalanceComponent do
     account_debit_id = String.to_integer(account_debit_id)
     account_credit_id = String.to_integer(account_credit_id)
 
-    amount = socket.assigns.card == :expenses && Decimal.negate(amount) || amount
+    amount = (socket.assigns.card == :expenses && Decimal.negate(amount)) || amount
 
     balance =
       Enum.find(current_balances, fn
@@ -39,7 +39,11 @@ defmodule MateWeb.EntryLive.AdjustBalanceComponent do
       account_debit_id: account_debit_id,
       account_credit_id: account_credit_id,
       entry_items: [
-        %{account_id: account_debit_id, source_id: account_credit_id, amount: balance_diff},
+        %{
+          account_id: account_debit_id,
+          source_id: account_credit_id,
+          amount: balance_diff
+        },
         %{
           account_id: account_credit_id,
           source_id: account_debit_id,

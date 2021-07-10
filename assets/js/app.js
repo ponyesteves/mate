@@ -112,6 +112,10 @@ function prevAmount(el) {
   return parseInt(el.dataset.prevAmount)
 }
 
+function setPrevAmount(el, amount) {
+  el.dataset.prevAmount = amount
+}
+
 function backgroundColor(direction) {
   if (direction === 'up') return 'green'
   if (direction === 'down') return 'red'
@@ -124,8 +128,8 @@ const Hooks = {
       setAmount(this.el, amount(this.el))
     },
     updated() {
-      const prevAmountValue = prevAmount(this.el)
       const amountValue = amount(this.el)
+      const prevAmountValue = prevAmount(this.el)
 
       if (prevAmountValue === amountValue)
         return setAmount(this.el, amountValue)
@@ -135,6 +139,8 @@ const Hooks = {
         from: prevAmountValue,
         number: amountValue,
       })
+
+      setPrevAmount(this.el, amountValue)
     },
   },
   Drop: {

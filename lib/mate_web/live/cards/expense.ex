@@ -5,7 +5,7 @@ defmodule MateWeb.ExpenseCard do
   @impl true
   def render(assigns) do
     ~L"""
-    <div class="card">
+    <div id="<%= @id %>" class="card">
       <div class="card__header--danger">
         <div class="card__header-title">Gastos</div>
         <%= live_patch to: Routes.page_path(@socket, :new_outcome), class: "btn btn-danger border-white" do %>
@@ -16,7 +16,7 @@ defmodule MateWeb.ExpenseCard do
         <ul class="list-group">
           <%= for balance <- @balances do %>
             <li class="list-group__item text-secondary">
-              <div id="expense<%= balance.account.id %>_<%= balance.source.id %>" class="row" phx-hook="Drag" data-account-id="<%= balance.account.id %>" draggable=true data-source-id="<%= balance.source.id %>" data-amount="<%= balance.amount %>">
+              <div class="row">
                 <div class="col-4">
                   <%= if Decimal.compare(balance.amount, 0) == :lt do %>
                     <%= balance.source.name %>
@@ -25,7 +25,8 @@ defmodule MateWeb.ExpenseCard do
                   <% end %>
                 </div>
                 <div class="col-4 d-flex justify-content-end align-items-center">
-                  <%= format_number(balance.amount, sup: :ars) %>
+                  <div id="expense_amount_<%= balance.id %>" class="col-4 d-flex justify-content-end align-items-center" data-amount="<%= balance.amount %>" data-prev-amount="<%= balance.prev_amount %>" phx-hook="Odometer">
+                  </div>
                 </div>
                 <div class="col-4 d-flex justify-content-end align-items-center">
                   <%= live_component @socket, MateWeb.DropdownComponent, %{id: "expense_#{balance.account.id}_#{balance.source.id}"} do %>

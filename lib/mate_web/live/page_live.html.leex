@@ -50,14 +50,14 @@
 
 <div class="d-flex flex-wrap justify-content-between mt-3">
   <div class="mt-4 col-md-5 col-12">
-    <%= live_component @socket, MateWeb.AvailableCard, id: "available-card", title: "Disponible", balances: @balances %>
+    <%= live_component @socket, MateWeb.AvailableCard, id: "availables-card", title: "Disponible", balances: @balances %>
   </div>
 
   <div class="mt-4 col-md-5 col-12">
-    <%= live_component @socket, MateWeb.ExpenseCard, title: "Gastos", balances: @expenses %>
+    <%= live_component @socket, MateWeb.ExpenseCard, id: "expenses-card", title: "Gastos", balances: @expenses %>
   </div>
 
   <div class="mt-4 col-md-5 col-12">
-    <%= live_component @socket, MateWeb.SavingCard, title: "Ahorros", balances: @savings %>
+    <%= live_component @socket, MateWeb.SavingCard, id: "savings-card", title: "Ahorros", balances: @savings %>
   </div>
 </div

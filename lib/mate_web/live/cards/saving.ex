@@ -5,7 +5,7 @@ defmodule MateWeb.SavingCard do
   @impl true
   def render(assigns) do
     ~L"""
-    <div class="card">
+    <div id="<%= @id %>" class="card">
       <div class="card__header--success">
         <div class="card__header-title"><%= @title %></div>
       </div>
@@ -17,9 +17,8 @@ defmodule MateWeb.SavingCard do
               <div class="col-4">
                 <%= balance.account.name %>
               </div>
-              <div class="col-4 d-flex justify-content-end align-items-center">
-                <%= format_number(balance.amount, sup: :ars) %>
-              </div>
+                  <div id="saving_amount_<%= balance.id %>" class="col-4 d-flex justify-content-end align-items-center" data-amount="<%= balance.amount %>" data-prev-amount="<%= balance.prev_amount %>" phx-hook="Odometer">
+                  </div>
               <div class="col-4 d-flex justify-content-end align-items-center">
                 <%= live_component @socket, MateWeb.DropdownComponent, %{id: "available_#{balance.account.id}"} do %>
                   <li>
