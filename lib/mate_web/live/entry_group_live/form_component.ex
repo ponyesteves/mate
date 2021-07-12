@@ -19,6 +19,21 @@ defmodule MateWeb.EntryGroupLive.FormComponent do
      |> assign(:changeset, changeset)}
   end
 
+  defp account_debit_id(socket, account_name) when account_name in [nil, ""], do: nil
+  defp account_debit_id(socket, account_name) do
+    debit_accounts = socket.assigns.debit_accounts
+
+    with {_, id} <- Enum.find(debit_accounts, fn {name, _} -> name == account_name end) do
+      "#{id}"
+    else
+      _ ->
+        type = socket.assigns.card == :expenses && :outcome || :assets
+        {:ok, account} = Mate.Conty.create_account(%{name: account_name, type: type})
+
+        "#{account.id}"
+    end
+  end
+
   @impl true
   def handle_event("validate", %{"entry_group" => entry_group_params}, socket) do
     changeset =
@@ -34,8 +49,20 @@ defmodule MateWeb.EntryGroupLive.FormComponent do
      )}
   end
 
-  def handle_event("save", %{"entry_group" => entry_group_params}, socket) do
-    save_entry_group(socket, socket.assigns.action, entry_group_params)
+  def handle_event(
+        "save",
+        %{"entry_group" => entry_group_params, "select_handler" => select_handler},
+        socket
+      ) do
+    account_debit_name = select_handler["account_debit_name"]
+
+    account_debit_id = account_debit_id(socket, account_debit_name)
+
+    save_entry_group(
+      socket,
+      socket.assigns.action,
+      Map.put(entry_group_params, "account_debit_id", account_debit_id)
+    )
   end
 
   defp build_periodicity_types_select_options(periodicity) do

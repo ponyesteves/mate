@@ -71,6 +71,7 @@ defmodule MateWeb.PageLive do
     socket
     |> assign(:page_title, "Disponible")
     |> assign(:entry_group, %EntryGroup{start_date: Date.utc_today()})
+    |> assign(:card, :availables)
     |> assign(debit_accounts: debit_accounts)
     |> assign(credit_accounts: credit_accounts)
   end
@@ -82,6 +83,7 @@ defmodule MateWeb.PageLive do
     socket
     |> assign(:page_title, "Gastos")
     |> assign(:entry_group, %EntryGroup{start_date: Date.utc_today()})
+    |> assign(:card, :expenses)
     |> assign(debit_accounts: debit_accounts)
     |> assign(credit_accounts: credit_accounts)
   end
