@@ -15,7 +15,7 @@ defmodule MateWeb.AvailableCard do
       <div class="card-body">
         <ul class="list-group">
           <%= for balance <- @balances do %>
-            <li id="<%= balance.account.id %>" class="list-group__item text-secondary" phx-hook="Drop">
+            <li id="<%= balance.account.id %>" class="list-group__item text-secondary">
             <div class="row">
               <div class="col-4">
                 <%= balance.account.name %>
@@ -52,33 +52,6 @@ defmodule MateWeb.AvailableCard do
         </ul>
       </div>
     </div>
-
     """
-  end
-
-  @impl true
-  def handle_event("drop", params, socket) do
-    account_debit_id = params["account_debit_id"]
-    account_credit_id = params["account_credit_id"]
-    source_id = params["source_id"]
-    amount = String.to_integer(params["amount"])
-
-    entry_attrs = %{
-      date: Date.utc_today(),
-      type: "adjust",
-      account_debit_id: account_debit_id,
-      account_credit_id: account_credit_id,
-      entry_items: [
-        %{account_id: account_debit_id, source_id: source_id, amount: Decimal.negate(amount)},
-        %{account_id: account_credit_id, source_id: source_id, amount: amount}
-      ]
-    }
-
-    Mate.Conty.change_entry(%Mate.Conty.Entry{}, entry_attrs)
-    |> Mate.Repo.insert()
-
-    {:noreply,
-     socket
-     |> push_patch(to: Routes.page_path(socket, :index))}
   end
 end
